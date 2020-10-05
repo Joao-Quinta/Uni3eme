@@ -329,7 +329,20 @@ $
 3 & 5 & -7\\
 0 & -7 & 2
 \end{bmatrix}
-\xrightarrow{L3 = L3 - 2*L1}
+\xrightarrow{L2 = 2*L2 - 3*L1}
+\begin{bmatrix} 
+2 & 1 & -4\\
+0 & 7 & -2\\
+0 & -7 & 2
+\end{bmatrix}
+\xrightarrow{L3 = L3 + L2}
+\begin{bmatrix} 
+2 & 1 & -4\\
+0 & 7 & -2\\
+0 & 0 & 0
+\end{bmatrix}
+\\\\
+rank(M) = 2
 $
 
 \item[(r)] det(A) = det
@@ -398,6 +411,24 @@ det(
 \end{bmatrix}
 ) = 17 - 3* 24 = -55
 $
+\item[(s)] Let A be a square matrix, A has an inverse $\Leftrightarrow$ det(A) $\neq$ 0.\\
+A is
+$
+\begin{bmatrix} 
+-1 & 1 & 1 & 0 \\
+0 & 0 & -1 & 0 \\
+0 & 0 & 1 & -1 \\
+0 & 0 & 1 & 0 
+\end{bmatrix},
+det(
+\begin{bmatrix} 
+-1 & 1 & 1 & 0 \\
+0 & 0 & -1 & 0 \\
+0 & 0 & 1 & -1 \\
+0 & 0 & 1 & 0 
+\end{bmatrix}
+)= 0 \Rightarrow
+$ A doesn't have an inverse.
 \end{itemize}
 
 % ----------------------------------
