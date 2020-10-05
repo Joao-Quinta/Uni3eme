@@ -1,0 +1,406 @@
+\documentclass[a4paper]{article}
+
+%%%%%%%% CREATE DOCUMENT STRUCTURE %%%%%%%%
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{subfig}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+%\usepackage{caption}
+\usepackage[justification=centering]{caption}
+\usepackage{subcaption}
+\usepackage{sectsty}
+\usepackage{float}
+\usepackage{titling} 
+\usepackage{blindtext}
+\usepackage[square,sort,comma,numbers]{natbib}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+
+%% definitions 
+\definecolor{darkgreen}{rgb}{0.0, 0.4, 0.0}
+
+%% Define your personal info here %%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\TPid{1}
+\newcommand\TPname{Basics}
+\newcommand\Firstname{Joao Filipe}
+\newcommand\Familyname{Costa da Quinta}
+\newcommand\Email{Joao.Costa@etu.unige.ch}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Page header %%%%%%
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{TP \TPid: \TPname}
+\lhead{\Firstname \; \Familyname}
+\rfoot{Page \thepage}
+
+
+%%%%%%%% DOCUMENT %%%%%%%%
+\begin{document}
+
+%%%% Title Page
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 							% horizontal line and its thickness
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\center 
+ 
+% University
+\textsc{\LARGE Université de Genève}\\[1cm]
+
+% Document info
+\textsc{\Large Imagerie Numérique}\\[0.2cm]
+\textsc{\large 13X004}\\[1cm] 										% Course Code
+\HRule \\[0.8cm]
+{ \huge \bfseries TP \TPid : \TPname}\\[0.7cm]								% Assignment
+\HRule \\[2cm]
+\large
+\emph{Author:} \Firstname \; \Familyname\\[0.5cm]		
+\emph{E-mail:} {\color{blue}\Email}\\[7cm]		
+% Author info
+% Author info
+{\large \today}\\[2cm]
+\includegraphics[width=0.4\textwidth]{images/unige_csd.png}\\[1cm] 	% University logo
+\vfill 
+\end{titlepage}
+
+
+% ============================================
+% ----------------------------------
+\section*{Exercise 1}
+
+% ----------------------------------
+\section*{Exercise 2}
+
+% ----------------------------------
+\section*{Exercise 3}
+
+% ----------------------------------
+\section*{Exercise 4}
+
+% ----------------------------------
+\section*{Exercise 5}
+
+% ----------------------------------
+\section*{Exercise 6}
+
+% ----------------------------------
+\section*{Exercise 7}
+
+$
+\begin{bmatrix} 
+x1\\x2\\x3\\x4\\x5
+\end{bmatrix}
++
+\begin{bmatrix} 
+y1\\y2\\y3\\y4\\y5
+\end{bmatrix}
+=
+\begin{bmatrix} 
+x1+y1\\x1+y2\\x3+y3\\x4+y4\\x5+y5
+\end{bmatrix}
+,
+\ \ \ \ \ \ \ \ \ \ \ \ 
+n *
+\begin{bmatrix} 
+x1\\x2\\x3\\x4\\x5
+\end{bmatrix}
+=
+\begin{bmatrix} 
+n *x1\\n* x2\\n*x3\\n*x4\\n*x5
+\end{bmatrix}
+=
+\begin{bmatrix} 
+nx1\\nx2\\nx3\\nx4\\nx5
+\end{bmatrix}
+$
+\begin{itemize}
+\item[(a)]
+The result is:
+$
+\begin{bmatrix} 
+5\\-13\\26\\1\\-6
+\end{bmatrix}
+$
+\item[(b)]
+We have: $ 3 * -1 + 4 * x = 17$ (solve for x) $ \longrightarrow -3 + 4x = 17 \Leftrightarrow 4x = 20 \Leftrightarrow x = 20/4$
+\item[(c)]
+We have: 
+$
+\begin{bmatrix} 
+\alpha + 12\\ 2\alpha  + 16\\ -\alpha + 8
+\end{bmatrix}
+=
+\begin{bmatrix} 
+-1\\ 0\\ 4
+\end{bmatrix}
+$ for the first equation $\alpha = -13$, and for the second $\alpha = -8$, as $\alpha$ can't take two different values at once, there is no solution.
+\item[(d)]
+$
+\begin{bmatrix} 
+\alpha + \beta \\ 2\alpha + 3\beta
+\end{bmatrix}
+=
+\begin{bmatrix} 
+5\\ 0
+\end{bmatrix}
+\Leftrightarrow
+\alpha = 15$ and $ \beta = -10
+$
+\item[(e)]
+Let (v1,v2,...,vn) (vectors) that form a vector space V, V is said linearly dependant if there are a1,a2,...,an scalars (at least one of them not 0), such that a1v1+a2v2+...+anvn = 0 (the vector 0)
+\begin{itemize}
+\item[(.a)] The only solution to a1v1+a2v2+a3v3 = 0 (v1,v2,v3,0 -> are vectors) is a1 = a2 = a3 = 0, so they are linearly independant.
+\item[(.b)] The only solution to a1v1+a2v2+a3v3 = 0 (v1,v2,v3,0 -> are vectors) is a1 = a2 = a3 = 0, so they are linearly independant.
+\end{itemize}
+\item[(f)] scalar product : 
+$
+\begin{bmatrix} 
+a1 \\ a2 \\ a3
+\end{bmatrix}
+*
+\begin{bmatrix} 
+b1 & b2 & b3
+\end{bmatrix} 
+=
+\begin{bmatrix} 
+a1*b1 & a1*b2 & a1*b3 \\
+a2*b1 & a2*b2 & a2*b3 \\
+a3*b1 & a3*b2 & a3*b3 
+\end{bmatrix} 
+$
+\\ We simply apply the formula above, and we get:
+$
+\begin{bmatrix} 
+3*4 & 3*9 & 3*2 \\
+-3*4 & -3*9 & -3*2\\
+1*4 & 1*9 & 1*2 
+\end{bmatrix}
+=
+\begin{bmatrix} 
+12 & 27 & 6 \\
+-12 & -27 & -6\\
+4 & 9 & 2 
+\end{bmatrix}
+$
+\item[(g)] (1) Let u (1,n) and v (n,1) be two vectors, the dot product between these two vecors is defined as: u1*v1 + u2 * v2 + ... + un*vn \\
+(2) The angle between two vectors is found by calculation the dot product of those two vectors, and dividing the result by the multiplication of their magnitude, we then apply arccos to the result, and find the angle\\
+We simply apply the formula above (1), and we get: $a^{T}b=$1*4 + 2*-5 + 3*6 = 12 (dot product)\\
+magnitude of $a = \sqrt{1^{2}+2^{2}+3^{2}} = 3.74$\\
+magnitude of $b = \sqrt{4^{2}+(-5)^{2}+6^{2}} = 8.77$\\
+multiplication of the magnitudes = 32.80\\
+We now use (2) and find: 12/32.80 = 0.36\\
+$cos^{-1}(0.36) = 68.90 $ which means the angle is acute 
+\item[(h)] cos(90) = 0, which means the result of the previous formula needs to be equal to 0, to be perpendicular angles, we need that thee dot product of $ a^{T}b=0$\\
+the result is: 6*4+(-1)*c+3*(-2) = 0
+$
+\Leftrightarrow
+$
+-c = -18 
+$
+\Leftrightarrow
+$
+c = 18
+\item[(i)] When we multiply two matrices they have to have the right dimensions, let the first matrix be of dimension A(m,n), then to compute AB, B needs to be B(n,p), and the result of C = AB, will be C(m,p)\\
+A is (4,3) and x is (3,1): Ax is possible to compute and will result in b(4,1)\\
+b = Ax = 
+$
+\begin{bmatrix} 
+-2*1+1*2+0*3\\
+-2*4+1*5+0*6\\
+-2*7+1*8+0*9\\
+-2*10+1*11+0*11 
+\end{bmatrix}
+=
+\begin{bmatrix} 
+0\\
+-3\\
+-6\\
+-9
+\end{bmatrix}
+$
+\item[(j)] A is of dimension A(4,3) and y(4,1), which means Ay is impossible to compute.
+\item[(k)]if B and C are matrices of dimension (m,n) B+C =
+$
+\begin{bmatrix} 
+b_{11}+c_{11} & ... & b_{1n}+c_{1n}\\
+.&&.\\
+.&&.\\
+.&&.\\
+b_{m1}+c_{m1} & ... & b_{mn}+c_{mn}\\
+\end{bmatrix}
+$\\
+B is of dimension (2,3) and C is (3,2) which means B+C is impossible to compute
+\item[(l)] B+C =
+$
+\begin{bmatrix} 
+b_{11}+c_{11} & ... & b_{1n}+c_{1n}\\
+.&&.\\
+.&&.\\
+.&&.\\
+b_{m1}+c_{m1} & ... & b_{mn}+c_{mn}\\
+\end{bmatrix}
+=
+\begin{bmatrix} 
+c_{11}+b_{11} & ... & c_{1n}+b_{1n}\\
+.&&.\\
+.&&.\\
+.&&.\\
+c_{m1}+b_{m1} & ... & c_{mn}+b_{mn}\\
+
+\end{bmatrix}
+=
+C+B
+$\\
+this is true because the operation + is commutative
+\item[(m)]  
+
+$
+(A+B)+C =
+\begin{bmatrix} 
+(a_{11}+b_{11})+c_{11} & ... & (a_{1n}+b_{1n})+c_{1n}\\
+.&&.\\
+.&&.\\
+.&&.\\
+(a_{m1}+b_{m1})+c_{m1} & ... & (a_{mn}+b_{mn})+c_{mn} \\
+\end{bmatrix}
+=
+\begin{bmatrix} 
+a_{11}+b_{11}+c_{11} & ... & a_{1n}+b_{1n}+c_{1n}\\
+.&&.\\
+.&&.\\
+.&&.\\
+a_{m1}+b_{m1}+c_{m1} & ... & a_{mn}+b_{mn}+c_{mn} \\
+\end{bmatrix}
+=\\\\\\
+\begin{bmatrix} 
+a_{11}+(b_{11}+c_{11}) & ... & a_{1n}+(b_{1n}+c_{1n})\\
+.&&.\\
+.&&.\\
+.&&.\\
+a_{m1}+(b_{m1}+c_{m1}) & ... & a_{mn}+(b_{mn}+c_{mn}) \\
+\end{bmatrix}
+= A+(B+C)
+$\\\\ This is true because the order of the addition doesn't matter, it's called the associative property.
+\item[(n)] This property is only true if we have the right dimensions for all matrices:
+\begin{itemize}
+\item[$(\rightarrow)$]A(l,m), B(m,n) and C(n,p), D=AB will result in D(l,n), which multiplied by C will result in E=DC, E(l,p).
+\item[$(\leftarrow)$]Now let D = BC which results in D(m,p), E=AD will result in E(l,p) which is the same as before.
+\end{itemize}
+
+\item[(o)] No this is not true, let B(m,n) and C(n,m), if n $\neq$ m then A = BC will be A(m,m) and A=CB will be A'(n,n) since n $\neq$ m $\Rightarrow$ A $\neq$ A'.
+
+\item[(p)] B(2,3), C(3,2), A=BC is then possible to compute, and A(2,2).\\\\
+$
+\begin{bmatrix} 
+1*1 + 2*3 + 3*5 & 1*2 + 2*4 + 3*6\\
+4*1 + 5*3 + 6*5 & 4*2 + 5*4 + 6*6
+\end{bmatrix}
+=
+\begin{bmatrix} 
+22 & 28\\
+49 & 64
+\end{bmatrix}
+$
+
+\item[(q)] The rank of a matrix is the dimension of the vector space generated by its columns or rows, as $rank(A)=rank(A^{T})$.\\\\
+M = 
+$
+\begin{bmatrix} 
+2 & 1 & -4\\
+3 & 5 & -7\\
+4 & -5 & -6
+\end{bmatrix}
+\xrightarrow{L3 = L3 - 2*L1}
+\begin{bmatrix} 
+2 & 1 & -4\\
+3 & 5 & -7\\
+0 & -7 & 2
+\end{bmatrix}
+\xrightarrow{L3 = L3 - 2*L1}
+$
+
+\item[(r)] det(A) = det
+$
+(
+\begin{bmatrix} 
+4 & 4\\
+2 & -5 
+\end{bmatrix}
+) = 4*(-5) - 4*2 = -28
+$\\\\
+det(B) = det
+$
+(
+\begin{bmatrix} 
+1 & 1 & 2\\
+2 & 3 & 1\\
+3 & 4 & -5
+\end{bmatrix}
+) = 
+1 * det(
+\begin{bmatrix} 
+3 & 1\\
+4 & -5 
+\end{bmatrix}
+)
+-1* det(
+\begin{bmatrix} 
+2 & 1\\
+3 & -5 
+\end{bmatrix}
+) + 
+2 * det(
+\begin{bmatrix} 
+2 & 3\\
+3 & 4 
+\end{bmatrix}
+)
+$\\
+$=
+1 *(3 * −5 − 1 * 4) − 1 *(2 * −5 − 1 * 3) + 2 * (2 * 4 − 3 * 3) = -8
+$\\\\
+det(C) = det
+$
+(
+\begin{bmatrix} 
+1 & 0 & 0 & 3\\
+2 & 1 & 0 & 1\\
+3 & 0 & 5 & 4\\
+0 & -3 & 2 & 2
+\end{bmatrix}
+)
+= 
+det(
+\begin{bmatrix} 
+1 & 0 & 1\\
+0 & 5 & 4\\
+-3 & 2 & 2
+\end{bmatrix}
+)
+-3 * det(
+\begin{bmatrix} 
+2 & 1 & 0 \\
+3 & 0 & 5 \\
+0 & -3 & 2
+\end{bmatrix}
+) = 17 - 3* 24 = -55
+$
+\end{itemize}
+
+% ----------------------------------
+\section*{Exercise 8}
+
+\end{document}
