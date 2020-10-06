@@ -1,10 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-from PIL import Image
 
-lena = mpimg.imread("lena.png")
-print(len(lena))
-print(len(lena[0]))
-print(lena[0][0])
-plt.imshow(lena)
+lena = mpimg.imread("lena.png")#lecture de image (ouvre l image)
+plt.imshow(lena)#ca va afficher l image, mais ca a besoin de la ligne 6
+plt.colorbar()
+plt.show()#sans cette ligne l image s affiche aps
 
