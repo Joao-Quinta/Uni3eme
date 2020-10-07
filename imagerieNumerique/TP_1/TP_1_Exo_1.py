@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import copy
+import numpy as np
 
 
 def transformImage(images):
@@ -17,7 +18,16 @@ lenaRGB = mpimg.imread("lena.png")
 lenaR = copy.deepcopy(lenaRGB)
 lenaG = copy.deepcopy(lenaRGB)
 lenaB = copy.deepcopy(lenaRGB)
-[lenaR, lenaG, lenaB] = transformImage([lenaR, lenaG, lenaB])
+imagesDone = transformImage([lenaR, lenaG, lenaB])
+imagesDone.insert(0, lenaRGB)
 
-fig, axes = plt.subplots(nrows=2, ncols=2)
+rows = 2
+cols = 2
+axes = []
+fig = plt.figure()
+
+for a in range(rows * cols):
+    axes.append(fig.add_subplot(rows, cols, a + 1))
+    plt.imshow(imagesDone[a])
+fig.tight_layout()
 plt.show()
