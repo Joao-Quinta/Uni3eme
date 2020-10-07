@@ -1,5 +1,4 @@
 import copy
-#salut je suis joao, et je teste un truc
 ####################################################       EXERCICE 1       ####################################################
 # retorune l etat resultat d un transition applique a un etat de depart
 def changementEtatExo1(etat,transition):
