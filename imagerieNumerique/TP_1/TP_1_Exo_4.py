@@ -11,7 +11,7 @@ row = lena.shape[0]
 col = lena.shape[1]
 
 mu = 0
-sigma = [1, 25, 50]
+sigma = [1, 2, 3]
 listeGauss = []
 for i in range(0, len(sigma)):
     gauss = np.random.normal(mu, sigma[i], (row, col, 1)).astype(np.float32)
