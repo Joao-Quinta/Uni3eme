@@ -82,22 +82,44 @@
 \section*{Exercise 1}
 On the top left corner, we have the original image, each pixel of this image is defined by 3 values: its Red Green Blue values.\\
 What we want to do is to sepearate each component of color from the others, so that we get an all Red imaged, same for Green and Blue.\\
-To get the Red one, we change the values of all the pixels, and we turn its Green and Blue components to 0, and let the Red component be, we do the same for the Green image and the Blue one.
+To get the Red one, we change the values of all the pixels, and we turn its Green and Blue components to 0, and let the Red component be, we do the same for the Green image and the Blue one.\\
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/exercice_1.PNG}\\[1cm] 
+\end{center}
+
 % ----------------------------------
 \section*{Exercise 2}
-See code.
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/exercice_2(a).PNG}\\[1cm] 
+\includegraphics[width=0.7\textwidth]{images/exercice_2(b).PNG}\\[1cm] 
+\end{center}
 % ----------------------------------
 \section*{Exercise 3}
-See code.
+\begin{center}
+\includegraphics[width=0.8\textwidth]{images/exercice_3.PNG}\\[1cm] 
+\end{center}
 
 % ----------------------------------
 \section*{Exercise 4}
+It is pretty weird why the two different methods return different results, since what we do in method a, is what the function used in method b does.\\
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/exercice_4.PNG}\\[1cm] 
+\end{center}
+
 
 % ----------------------------------
 \section*{Exercise 5}
+Visually, I would say that gauss noise is easier to remove, since it is 'even' in every pixel, and it's only one kind of noise, however, salt and pepper has less different pixels, but the ones that are different, aren't 'close' to the real value, they are just white or black, moreover, there are these two kinds of noise, which should make it harder.
+\begin{center}
+\includegraphics[width=1\textwidth]{images/exercice_5.PNG}\\[1cm] 
+\end{center}
 
 % ----------------------------------
 \section*{Exercise 6}
+Each pixel in the final image is now the avearage of other pixels, so we end up with a total of less pixels (see axis next to image) and obviously a loss of quality. We can also see that with bigger steps, the image loses even more quality.
+\begin{center}
+\includegraphics[width=0.9\textwidth]{images/exercice_6.PNG}\\[1cm] 
+\end{center}
 
 % ----------------------------------
 \section*{Exercise 7}
@@ -412,7 +434,7 @@ det(
 3 & 0 & 5 \\
 0 & -3 & 2
 \end{bmatrix}
-) = 17 - 3* 24 = -55
+) = 95
 $
 \item[(s)] Let A be a square matrix, A has an inverse $\Leftrightarrow$ det(A) $\neq$ 0.\\
 A is
@@ -453,6 +475,9 @@ f(x) = 0 for x $<$ a or x $>$ b
 
 \end{itemize}
 \item[(c)]A = $\{1,2\}$ and B = $\{2,3\}$
+\begin{center}
+\includegraphics[width=0.3\textwidth]{images/venn.PNG}\\[1cm] 
+\end{center}
 \begin{itemize}
 \item[$A \cup B$] = $\{1,2,3\}$
 \item[$A \cap B$] = $\{2\}$
@@ -461,13 +486,17 @@ f(x) = 0 for x $<$ a or x $>$ b
 \end{itemize}
 \item[(d)]
 \begin{itemize}
-\item[(a)]
-\item[(b)]
-\item[(c)]
-\item[(d)]
-\item[(e)]
-\item[(f)]
-\item[(g)]
+\item[a)]$p_{x}(0)= p_{x,y}(X=0,Y=0)+p_{x,y}(X=0,Y=1)=\frac{1}{4} $\\\\
+$p_{x}(1)= p_{x,y}(X=1,Y=0)+p_{x,y}(X=1,Y=1)=\frac{3}{4} $\\
+\item[(b)]$p_{y}(0)= p_{x,y}(X=0,Y=0)+p_{x,y}(X=1,Y=0)=\frac{1}{2} $\\\\
+$p_{y}(1)= p_{x,y}(X=0,Y=1)+p_{x,y}(X=1,Y=1)=\frac{1}{2} $\\
+\item[(c)]$p_{x|y}(0|Y=0)=  \frac{p_{x,y}(0,0)}{p_{y}(0)} =\frac{1}{2} $\\\\
+$p_{x|y}(1|Y=0)=  \frac{p_{x,y}(1,0)}{p_{y}(0)} =\frac{1}{2} $\\
+\item[(d)]$p_{y|x}(0|X=1)=  \frac{p_{x,y}(1,0)}{p_{x}(1)} =\frac{1}{3} $\\\\
+$p_{y|x}(1|X=1)=  \frac{p_{x,y}(1,1)}{p_{x}(1)} =\frac{2}{3} $\\
+\item[(e)]$E\left[X\right] = 0*p_{x}(0)+1*p_{x}(1)=\frac{3}{4}$\\
+\item[(f)]$E\left[X|Y=0\right] = 0*p_{x|y}(0|Y=0)+1*p_{x|y}(1|Y=0)=\frac{1}{2}$\\
+\item[(g)]$var(X)= E\left[X^{2}\right] - E\left[X\right]^{2} = \frac{9}{16} - \frac{9}{16} = 0$  
 \end{itemize}
 \end{itemize}
 \end{document}

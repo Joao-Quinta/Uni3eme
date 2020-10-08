@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  7 OCT 2020 21:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  8 OCT 2020 22:30
 entering extended mode
 **./CostaDaQuinta_JoaoFilipe.tex
 (CostaDaQuinta_JoaoFilipe.tex
@@ -971,76 +971,179 @@ Package pdftex.def Info: images/unige_csd.png  used on input line 75.
 [1
 
 {C:/Users/qjoao/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./images/un
-ige_csd.png>]pdfTeX warning (ext4): destination with the same identifier (name{
-page.1}) has been already used, duplicate ignored
+ige_csd.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 83--86
+
+ []
+
+<images/exercice_1.PNG, id=44, 433.62pt x 351.56343pt>
+File: images/exercice_1.PNG Graphic file (type png)
+<use images/exercice_1.PNG>
+Package pdftex.def Info: images/exercice_1.PNG  used on input line 87.
+(pdftex.def)             Requested size: 338.58632pt x 274.52414pt.
+<images/exercice_2(a).PNG, id=45, 409.53pt x 139.27031pt>
+File: images/exercice_2(a).PNG Graphic file (type png)
+<use images/exercice_2(a).PNG>
+Package pdftex.def Info: images/exercice_2(a).PNG  used on input line 93.
+(pdftex.def)             Requested size: 338.58632pt x 115.1523pt.
+<images/exercice_2(b).PNG, id=46, 472.01344pt x 165.61874pt>
+File: images/exercice_2(b).PNG Graphic file (type png)
+<use images/exercice_2(b).PNG>
+Package pdftex.def Info: images/exercice_2(b).PNG  used on input line 94.
+(pdftex.def)             Requested size: 338.58632pt x 118.80315pt.
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.201 \item[(g)]
-                 (1) Let u (1,n) and v (n,1) be two vectors, the dot product...
-[1]
-Overfull \hbox (22.32455pt too wide) in paragraph at lines 273--300
+l.95 \end{center}
+                  [1 <./images/exercice_1.PNG> <./images/exercice_2(a).PNG>]
+<images/exercice_3.PNG, id=56, 542.025pt x 221.32687pt>
+File: images/exercice_3.PNG Graphic file (type png)
+<use images/exercice_3.PNG>
+Package pdftex.def Info: images/exercice_3.PNG  used on input line 99.
+(pdftex.def)             Requested size: 386.95897pt x 158.01447pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 104--105
+
+ []
+
+<images/exercice_4.PNG, id=57, 505.13719pt x 359.09157pt>
+File: images/exercice_4.PNG Graphic file (type png)
+<use images/exercice_4.PNG>
+Package pdftex.def Info: images/exercice_4.PNG  used on input line 106.
+(pdftex.def)             Requested size: 338.58632pt x 240.6942pt.
+[2 <./images/exercice_2(b).PNG> <./images/exercice_3.PNG> <./images/exercice_4.
+PNG>]
+<images/exercice_5.PNG, id=67, 1330.21968pt x 403.5075pt>
+File: images/exercice_5.PNG Graphic file (type png)
+<use images/exercice_5.PNG>
+Package pdftex.def Info: images/exercice_5.PNG  used on input line 114.
+(pdftex.def)             Requested size: 483.69687pt x 146.7218pt.
+<images/exercice_6.PNG, id=68, 449.42906pt x 383.18156pt>
+File: images/exercice_6.PNG Graphic file (type png)
+<use images/exercice_6.PNG>
+Package pdftex.def Info: images/exercice_6.PNG  used on input line 121.
+(pdftex.def)             Requested size: 435.32422pt x 371.17114pt.
+ [3 <./images/exercice_5.PNG> <./images/exercice_6.PNG>] [4]
+Overfull \hbox (22.32455pt too wide) in paragraph at lines 295--322
 []$\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 A \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 B\OT1
 /cmr/m/n/10 ) + \OML/cmm/m/it/10 C \OT1/cmr/m/n/10 = [] = [] =
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 273--300
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 308--320
+Underfull \hbox (badness 10000) in paragraph at lines 295--322
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 321--350
+Underfull \hbox (badness 10000) in paragraph at lines 330--342
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 343--372
 
  []
 
 ("C:\Users\qjoao\AppData\Local\Programs\MiKTeX 2.9\tex/latex/ucs\uni-34.def"
 File: uni-34.def 2013/05/13 UCS: Unicode data U+2200..U+22FF
 )
-Underfull \hbox (badness 10000) in paragraph at lines 351--417
+Underfull \hbox (badness 10000) in paragraph at lines 373--439
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 351--417
+Underfull \hbox (badness 10000) in paragraph at lines 373--439
 
  []
 
+[5]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 443.
+(amsmath)                 on input line 465.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 447--448
+Underfull \hbox (badness 10000) in paragraph at lines 469--470
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 471--473
+
+ []
+
+<images/venn.PNG, id=93, 429.85594pt x 309.40594pt>
+File: images/venn.PNG Graphic file (type png)
+<use images/venn.PNG>
+Package pdftex.def Info: images/venn.PNG  used on input line 479.
+(pdftex.def)             Requested size: 145.11053pt x 104.45068pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 489--491
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 449--451
+Underfull \hbox (badness 10000) in paragraph at lines 489--491
 
  []
 
-[3] [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 473.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 473.
+
+Underfull \hbox (badness 10000) in paragraph at lines 491--493
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 491--493
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 493--495
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 493--495
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 495--497
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 495--497
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 497--498
+
+ []
+
+[6 <./images/venn.PNG>]
+Underfull \hbox (badness 10000) in paragraph at lines 498--499
+
+ []
+
+[7]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 502.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 502.
  (CostaDaQuinta_JoaoFilipe.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 473.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 473.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 502.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 502.
 Package rerunfilecheck Info: File `CostaDaQuinta_JoaoFilipe.out' has not change
 d.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 473.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 502.
  ) 
 Here is how much of TeX's memory you used:
- 21946 strings out of 481545
- 411644 string characters out of 2913489
- 855645 words of memory out of 3000000
- 36753 multiletter control sequences out of 15000+200000
+ 21998 strings out of 481545
+ 412770 string characters out of 2913489
+ 858645 words of memory out of 3000000
+ 36793 multiletter control sequences out of 15000+200000
  540794 words of font info for 37 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  68i,12n,97p,491b,596s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1065,9 +1168,9 @@ mr7.pfb><C:/Users/qjoao/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/am
 sfonts/cm/cmsy10.pfb><C:/Users/qjoao/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/cm/cmsy5.pfb><C:/Users/qjoao/AppData/Local/Programs/MiKTeX 
 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on CostaDaQuinta_JoaoFilipe.pdf (5 pages, 194263 bytes).
+Output written on CostaDaQuinta_JoaoFilipe.pdf (8 pages, 1458321 bytes).
 PDF statistics:
- 299 PDF objects out of 1000 (max. 8388607)
- 13 named destinations out of 1000 (max. 500000)
- 114 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 330 PDF objects out of 1000 (max. 8388607)
+ 16 named destinations out of 1000 (max. 500000)
+ 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 
