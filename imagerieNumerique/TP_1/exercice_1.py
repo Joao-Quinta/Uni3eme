@@ -1,3 +1,9 @@
+'''
+TP1 imagerie numerique
+Costa da Quinta, Joao Filipe
+exercice 1
+'''
+
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import copy
