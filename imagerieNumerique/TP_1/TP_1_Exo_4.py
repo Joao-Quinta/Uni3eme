@@ -14,7 +14,7 @@ col = grayscale.shape[1]
 
 # centralized normal distribution with the different sigma values
 mu = 0
-sigma = [0.5, 2.5, 5.0]
+sigma = [0.01, 0.09, 0.19]
 listeGauss = []
 listLabels = []
 
@@ -29,7 +29,7 @@ for i in range(0, len(sigma)):
 ################################## (B) ##################################
 for i in range(0, len(sigma)):
     # we creat the noisy image using the function random_noise
-    noiseB = util.random_noise(grayscale, var=sigma[i] ** 2, )
+    noiseB = util.random_noise(grayscale, var=sigma[i] ** 2, clip=True)
     listeGauss.append(noiseB)
     listLabels.append(str(sigma[i]))
 
