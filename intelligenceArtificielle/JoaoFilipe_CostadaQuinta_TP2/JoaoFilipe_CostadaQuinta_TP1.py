@@ -1,4 +1,5 @@
 import copy
+import time
 
 
 ####################################################       EXERCICE 1       ####################################################
@@ -21,7 +22,8 @@ def calculTransitionPossibleExo2(etat):
 
 
 # cette fonction est exactement la même que dans l'exo 3, ou chaque boucle est bien commenté
-def calculSolutionExo2():
+def calculSolutionExo2(indice):
+    iteration = 0
     etatCourant = []
     parentEtatCourant = []
     etatInitial = [[3, 2, 1], [], []]  # seule diffèrence avec exo 3, on definit un etat initial et final
@@ -31,8 +33,14 @@ def calculSolutionExo2():
     etatAVisister[0].append(etatInitial.copy())
     etatAVisister[1].append([])
     while len(etatAVisister[0]) > 0:
-        etatCourant = etatAVisister[0].pop()
-        parentEtatCourant = etatAVisister[1].pop()
+
+        etatCourant = etatAVisister[0].pop(indice)
+        parentEtatCourant = etatAVisister[1].pop(indice)
+        print()
+        #print("c'est l'iteration numero : ", iteration, " || etat a visiter : ", len(etatAVisister[0]), " || etat deja visite : ", len(etatDejaVisite[0]))
+        print('le noeud courant : ', etatCourant)
+        print('etat dans la file', etatAVisister[0])
+        print()
         if etatCourant == etatFinal:
             etatDejaVisite[0].append(etatCourant.copy())
             etatDejaVisite[1].append(parentEtatCourant.copy())
@@ -44,9 +52,11 @@ def calculSolutionExo2():
         for i in range(0, len(listePossibilites)):
             listeEtatCalcules.append(changementEtatExo2(copy.deepcopy(etatCourant), listePossibilites[i]))
         for i in range(0, len(listeEtatCalcules)):
-            if listeEtatCalcules[i] not in etatDejaVisite[0]:
+            if listeEtatCalcules[i] not in etatDejaVisite[0] and listeEtatCalcules[i] not in etatAVisister[0]:
                 etatAVisister[0].append(listeEtatCalcules[i].copy())
                 etatAVisister[1].append(etatCourant)
+        iteration = iteration + 1
+
     cheminEtats = []
     etatCourantBacktracking = etatCourant.copy()
     parentEtatCourantBacktracking = parentEtatCourant.copy()
@@ -55,16 +65,32 @@ def calculSolutionExo2():
         etatCourantBacktracking = parentEtatCourantBacktracking
         parentEtatCourantBacktracking = etatDejaVisite[1][etatDejaVisite[0].index(etatCourantBacktracking)]
     cheminEtats.insert(0, etatCourantBacktracking)
-    print("voici le chemin en etat depuis  inicial à final :")
-    print(cheminEtats)
+    print()
+    # print("voici le chemin en etat depuis  inicial à final :")
+    # print(len(cheminEtats), cheminEtats)
     print()
 
 
 print()
-print("#############################            EXO_2 DEBUT            #############################")
+print("#############################            EXO_3 DEBUT            #############################")
+print("#############################            <DFS START>            #############################")
 print()
-calculSolutionExo2()
-print("#############################            EXO_2 END              #############################")
+DfsTimeStart = time.time()
+calculSolutionExo2(-1)
+DfsTimeEnd = time.time()
+DfsTotalTime = DfsTimeEnd - DfsTimeStart
+print()
+print("#############################            <DFS END>            #############################")
+print("#############################            <BFS START>            #############################")
+print()
+BfsTimeStart = time.time()
+calculSolutionExo2(0)
+BfsTimeEnd = time.time()
+BfsTotalTime = BfsTimeEnd - BfsTimeStart
+print()
+print("#############################            <BFS END>            #############################")
+print('DFS TIME : ', DfsTotalTime, ' BFS TIME : ', BfsTotalTime)
+print("#############################            EXO_3 END              #############################")
 print()
 '''
 
