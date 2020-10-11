@@ -11,7 +11,18 @@ int main(int argc, char **argv) {
   MPI_Barrier(MPI_COMM_WORLD);
   double start = MPI_Wtime();
 
-  // execution de l'algorithme
+  std::vector<int> vector(100, 0);
+  if(myRank == 0) {
+    vector = std::vector<int>(100, 1);
+    for (int i=1; i < nProc+1; i++){
+      MPI_Send(v.data(),v.size(),MPI_INT,i,0,MPI_COMM_WORLD);
+    }
+  }
+  else{
+    MPI_Status status;
+    MPI_Recv(v.data(), v.size(), MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+    std::cout << "I'm process " << myRank << " last element of my vector after receive is " << v.back() << std::endl;
+  }
 
   MPI_Barrier(MPI_COMM_WORLD);
   double end = MPI_Wtime();
