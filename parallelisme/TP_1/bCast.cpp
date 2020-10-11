@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   double start = MPI_Wtime();
 
   std::vector<int> vector(100, 0);
-  if(myRank == 0) vector = std::vector<int>(100, 1);
+  if(myRank == 0) vector = std::vector<int>(100000000, 1);
 
   MPI_Bcast( vector.data(), vector.size(), MPI_INT, 0, MPI_COMM_WORLD );
 
