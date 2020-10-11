@@ -12,6 +12,8 @@ GUIDE TO COMPILE IN BAOBAB ->
   	scp fileName.cpp costadj7@baobab2.hpc.unige.ch:/home/users/c/costadj7/scratch
 (3) run this command to compile your cpp code:
 	mpiCC hello.cpp -o hello -std=c++11
+		if in local, execute with:
+			mpirun -np (nb proc) --oversubscribe ./nomExecutable
 (4) make a batchfile.sh with the code to execute the job, to get this code:
   	https://baobabmaster.unige.ch/iface
 (5) copy code into file, this can be done using VIM:
