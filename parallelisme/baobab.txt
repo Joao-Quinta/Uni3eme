@@ -2,6 +2,23 @@ to connect we simply copy this line to the terminal:
 
 ssh costadj7@baobab2.hpc.unige.ch
 
+and then input password
 
 
-and then inpute password
+GUIDE TO COMPILE IN BAOBAB -> 
+
+(1) create c++ file in your computer, or in baobab
+(2) copy it into your baobab by running line :
+  scp fileName.cpp costadj7@baobab2.hpc.unige.ch:/home/users/c/costadj7/scratch
+(3) make a batchfile.sh with the code to execute the job, to get this code:
+  https://baobabmaster.unige.ch/iface
+(4) copy code into file, this can be done using VIM:
+  see this site for a quick guide VIM commands :
+     https://www.howtoforge.com/vim-basics
+(5) sbatch batchfile.sh -> to submite the execution into baobab
+
+TO CHECK JOB: squeue -u costadj7 (username)
+IF JOB DONE: we will have a output file in the folder we are in
+
+
+IMPORTANT NOTES : to execute in baobab, we need to also compile in baobab, compiling locally and copying the fito to baobab won't work!
