@@ -12,9 +12,9 @@ int main(int argc, char **argv) {
   MPI_Barrier(MPI_COMM_WORLD);
   double start = MPI_Wtime();
 
-  std::vector<int> vector(100, 0);
+  std::vector<int> vector(100000000, 0);
   if(myRank == 0) {
-    vector = std::vector<int>(100, 1);
+    vector = std::vector<int>(100000000, 1);
     for (int i=1; i < nProc; i++){
       MPI_Send(vector.data(),vector.size(),MPI_INT,i,0,MPI_COMM_WORLD);
     }
