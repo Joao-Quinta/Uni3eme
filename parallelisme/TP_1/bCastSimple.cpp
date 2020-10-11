@@ -22,7 +22,6 @@ int main(int argc, char **argv) {
   else{
     MPI_Status status;
     MPI_Recv(vector.data(), vector.size(), MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-    std::cout << "I'm process " << myRank << " last element of my vector after receive is " << vector.back() << std::endl;
   }
 
   MPI_Barrier(MPI_COMM_WORLD);
