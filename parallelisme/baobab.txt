@@ -24,3 +24,9 @@ IF JOB DONE: we will have a output file in the folder we are in
 
 
 IMPORTANT NOTES : to execute in baobab, we need to also compile in baobab, compiling locally and copying the fito to baobab won't work!
+
+
+
+
+copier depuis baobab:
+	scp costadj7@baobab2.hpc.unige.ch:/home/users/c/costadj7/scratch outBcast1.out
