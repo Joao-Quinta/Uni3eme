@@ -1,0 +1,7 @@
+to connect we simply copy this line to the terminal:
+
+ssh costadj7@baobab2.hpc.unige.ch
+
+
+
+and then inpute password
