@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 int main(int argc, char **argv) {
   int myRank, nProc;
@@ -16,7 +17,7 @@ int main(int argc, char **argv) {
   std::vector<int> vector(100, 0);
   if(myRank == 0){
     vector = std::vector<int>(100, 1);
-    for (int i=1; i < min(nProc,3); i++){
+    for (int i=1; i < std::min(nProc,3); i++){
       MPI_Send(vector.data(),vector.size(),MPI_INT,i,0,MPI_COMM_WORLD);
     }
   }
