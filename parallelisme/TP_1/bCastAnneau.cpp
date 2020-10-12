@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
   MPI_Barrier(MPI_COMM_WORLD);
   double start = MPI_Wtime();
 
+  // execution de l'algorithme
   std::vector<int> vector(100, 0);
   if(myRank == 0){
     vector = std::vector<int>(100, 1);
@@ -19,17 +20,20 @@ int main(int argc, char **argv) {
       MPI_Send(vector.data(),vector.size(),MPI_INT,i,0,MPI_COMM_WORLD);
     }
   }
-  else if (myRank == 1 or myRank == 2){
+  else{
     MPI_Status status;
-    MPI_Recv(vector.data(), vector.size(), MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+    if (myRank < 3){
+      MPI_Recv(vector.data(), vector.size(), MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+    }
+    else{
+      MPI_Recv(vector.data(), vector.size(), MPI_INT, myRank-2, 1, MPI_COMM_WORLD, &status);
+    }
     if (myRank + 2 < nProc){
       MPI_Send(vector.data(),vector.size(),MPI_INT,myRank+2,1,MPI_COMM_WORLD);
     }
   }
-  else{
-    MPI_Status status;
-    MPI_Recv(vector.data(), vector.size(), MPI_INT, myRank-2, 1, MPI_COMM_WORLD, &status);
-  }
+  // execution de l'algorithme
+
 
   MPI_Barrier(MPI_COMM_WORLD);
   double end = MPI_Wtime();

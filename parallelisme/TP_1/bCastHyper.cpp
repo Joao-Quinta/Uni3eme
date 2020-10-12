@@ -1,5 +1,6 @@
 #include <mpi.h>
 #include <iostream>
+#include <vector>
 
 int main(int argc, char **argv) {
   int myRank, nProc;
@@ -10,6 +11,9 @@ int main(int argc, char **argv) {
 
   MPI_Barrier(MPI_COMM_WORLD);
   double start = MPI_Wtime();
+
+  // execution de l'algorithme
+  std::vector<int> vector(100, 0);
 
   // execution de l'algorithme
 

@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
   MPI_Barrier(MPI_COMM_WORLD);
   double start = MPI_Wtime();
 
+  // execution de l'algorithme
   std::vector<int> vector(100000000, 0);
   if(myRank == 0) {
     vector = std::vector<int>(100000000, 1);
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
     MPI_Status status;
     MPI_Recv(vector.data(), vector.size(), MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
   }
+  // execution de l'algorithme
 
   MPI_Barrier(MPI_COMM_WORLD);
   double end = MPI_Wtime();
