@@ -1,9 +1,10 @@
 #include <mpi.h>
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 int main(int argc, char **argv) {
-  int myRank, nProc;
+  int myRank, nProc, myStep;
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
@@ -14,7 +15,20 @@ int main(int argc, char **argv) {
 
   // execution de l'algorithme
   std::vector<int> vector(100, 0);
-
+  if (myRank == 0) {
+    vector = std::vector<int>(100, 1);
+    myStep = 0;
+  }
+  else{
+    myStep = int(log(myRank));
+    MPI_Status status;
+    MPI_Recv(vector.data(), vector.size(), MPI_INT, myRank-int(pow(2,myStep)), 0, MPI_COMM_WORLD, &status);
+    myStep = myStep + 1;
+  }
+  while (int(pow(2,myStep)) < nProc) {
+    MPI_Send(vector.data(),vector.size(),MPI_INT,myRank+int(pow(2,myStep)),0,MPI_COMM_WORLD);
+    myStep = myStep + 1;
+  }
   // execution de l'algorithme
 
   MPI_Barrier(MPI_COMM_WORLD);
