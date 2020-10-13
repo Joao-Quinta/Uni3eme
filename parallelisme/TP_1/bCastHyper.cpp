@@ -15,9 +15,9 @@ int main(int argc, char **argv) {
   double start = MPI_Wtime();
 
   // execution de l'algorithme
-  std::vector<int> vector(100, 0);
+  std::vector<int> vector(100000000, 0);
   if (myRank == 0) {
-    vector = std::vector<int>(100, 1);
+    vector = std::vector<int>(100000000, 1);
     myStep = 0;
   }else{
     myStep = int(std::log2(myRank));

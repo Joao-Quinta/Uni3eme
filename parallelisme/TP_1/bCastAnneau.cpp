@@ -14,9 +14,9 @@ int main(int argc, char **argv) {
   double start = MPI_Wtime();
 
   // execution de l'algorithme
-  std::vector<int> vector(100, 0);
+  std::vector<int> vector(100000000, 0);
   if(myRank == 0){
-    vector = std::vector<int>(100, 1);
+    vector = std::vector<int>(100000000, 1);
     for (int i=1; i < std::min(nProc,3); i++){
       MPI_Send(vector.data(),vector.size(),MPI_INT,i,0,MPI_COMM_WORLD);
     }
