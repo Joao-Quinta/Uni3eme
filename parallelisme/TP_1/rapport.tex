@@ -1,0 +1,121 @@
+\documentclass[a4paper]{article}
+
+%%%%%%%% CREATE DOCUMENT STRUCTURE %%%%%%%%
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{subfig}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+%\usepackage{caption}
+\usepackage[justification=centering]{caption}
+\usepackage{subcaption}
+\usepackage{sectsty}
+\usepackage{float}
+\usepackage{titling} 
+\usepackage{blindtext}
+\usepackage[square,sort,comma,numbers]{natbib}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+
+%% definitions 
+\definecolor{darkgreen}{rgb}{0.0, 0.4, 0.0}
+
+%% Define your personal info here %%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\TPid{1}
+\newcommand\TPcours{Parallélisme}
+\newcommand\TPname{Basics}
+\newcommand\Firstname{Joao Filipe}
+\newcommand\Familyname{Costa da Quinta}
+\newcommand\Email{Joao.Costa@etu.unige.ch}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Page header %%%%%%
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\TPcours: TP \TPid}
+\lhead{\Firstname \; \Familyname}
+\rfoot{Page \thepage}
+
+
+%%%%%%%% DOCUMENT %%%%%%%%
+\begin{document}
+
+\section*{Compléxité: Espace}
+Celle ci sera la même partout car le but dans tous les algorithmes est le même, le partage d'information, à la fin de l'exécution, tout processus aura une copie entière du vecteur.\\\\
+Soit n le nombre de processus, et x la place en mémoire pour 1 vecteur. Alors la complexité en mémoire est:
+\begin{center}
+O(n*x) 
+\end{center}
+
+\section*{Compléxité: Temps}
+Ici nous aurons des complexités différentes pour chaque algorithme.\\
+\begin{itemize}
+\item[Simple:] Pour cet algorithme on a une simple boucle $for$ qui fait une itération par nombre de processus (-1). Disons que chaque itération prend t temps et qu'il y a n processus, alors la complexité est:  
+\begin{center}
+O((n-1)*x) , qu'on écrit O(n*t)
+\end{center}
+
+
+\item[Anneau:] Maintenant c'est où nous voyons l'intérêt du parallélisme, on va faire le même nombre d'itérations, mais elles seront faites en parallèle par deux processus différents plutôt qu'un seul. Soit le temps de chaque itération temps t et qu'il y a n processus:  
+\begin{center}
+O(2*t + (n-3)/2 * t ), qu'on écrit O((n/2)*t) 
+\end{center}
+
+\item[Hypercube:] Pour ce dernier le principe est exactement le même que avant, sauf que plutôt qu'avoir 2 processus qui envoient le vecteur, on en aura plus:
+\begin{itemize} 
+\item[cycle 1 -> ] on a 1 processus
+\item[cycle 2 -> ] on a 2 processus
+\item[cycle 3 -> ] on a 4 processus
+\item[ ... ]
+\item[cycle n -> ] on a $2^{(n-1)}$ processus 
+\end{itemize} 
+Pour n processus ils nous faudra donc $log_{2}(n)$ cycles. On a toujours temps t par cycle
+\begin{center}
+O($log_{2}(n)$*t) 
+\end{center}
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

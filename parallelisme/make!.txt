@@ -1,0 +1,18 @@
+all: broadcast_simple broadcast_anneau broadcast_hypercube
+
+
+broadcast_simple: broadcast_simple.o
+        mpic++ broadcast_simple.o -o broadcast_simple
+broadcast_anneau: broadcast_anneau.o
+        mpic++ broadcast_anneau.o -o broadcast_anneau
+broadcast_hypercube: broadcast_hypercube.o
+        mpic++ broadcast_hypercube.o -o broadcast_hypercube
+
+broadcast_simple.o: broadcast_simple.cpp
+        g++ -c broadcast_simple.cpp -o broadcast_simple.o
+
+broadcast_anneau.o: broadcast_anneau.cpp
+        g++ -c broadcast_anneau.cpp -o broadcast_anneau.o
+
+broadcast_hypercube.o: broadcast_hypercube.cpp
+        g++ -c broadcast_hypercube.cpp -o broadcast_hypercube.o
