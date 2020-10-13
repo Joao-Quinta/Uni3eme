@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <cmath>
 
 int main(int argc, char **argv) {
   int myRank, nProc, myStep;
@@ -18,9 +19,8 @@ int main(int argc, char **argv) {
   if (myRank == 0) {
     vector = std::vector<int>(100, 1);
     myStep = 0;
-  }
-  else{
-    myStep = int(log(myRank));
+  }else{
+    myStep = int(std::log2(myRank));
     MPI_Status status;
     MPI_Recv(vector.data(), vector.size(), MPI_INT, myRank-int(pow(2,myStep)), 0, MPI_COMM_WORLD, &status);
     myStep = myStep + 1;
@@ -29,6 +29,8 @@ int main(int argc, char **argv) {
     MPI_Send(vector.data(),vector.size(),MPI_INT,myRank+int(pow(2,myStep)),0,MPI_COMM_WORLD);
     myStep = myStep + 1;
   }
+  std::cout << "DONE: " << myRank <<" VECTOR : "<< vector.at(0)<< std::endl;
+
   // execution de l'algorithme
 
   MPI_Barrier(MPI_COMM_WORLD);
