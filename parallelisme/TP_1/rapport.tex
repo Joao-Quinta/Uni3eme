@@ -63,7 +63,7 @@ Ici nous aurons des complexités différentes pour chaque algorithme.\\
 \begin{itemize}
 \item[Simple:] Pour cet algorithme on a une simple boucle $for$ qui fait une itération par nombre de processus (-1). Disons que chaque itération prend t temps et qu'il y a n processus, alors la complexité est:  
 \begin{center}
-O((n-1)*x) , qu'on écrit O(n*t)
+O((n-1)*t) , qu'on écrit O(n*t)
 \end{center}
 
 
@@ -73,6 +73,7 @@ O(2*t + (n-3)/2 * t ), qu'on écrit O((n/2)*t)
 \end{center}
 
 \item[Hypercube:] Pour ce dernier le principe est exactement le même que avant, sauf que plutôt qu'avoir 2 processus qui envoient le vecteur, on en aura plus:
+
 \begin{itemize} 
 \item[cycle 1 -> ] on a 1 processus
 \item[cycle 2 -> ] on a 2 processus
@@ -80,11 +81,13 @@ O(2*t + (n-3)/2 * t ), qu'on écrit O((n/2)*t)
 \item[ ... ]
 \item[cycle n -> ] on a $2^{(n-1)}$ processus 
 \end{itemize} 
+
 Pour n processus ils nous faudra donc $log_{2}(n)$ cycles. On a toujours temps t par cycle
 \begin{center}
 O($log_{2}(n)$*t) 
 \end{center}
 
+\section*{Compléxité: Temps}
 \end{itemize}
 
 
