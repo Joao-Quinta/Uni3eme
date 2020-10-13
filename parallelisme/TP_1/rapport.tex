@@ -52,43 +52,60 @@
 \begin{document}
 
 \section*{Compléxité: Espace}
-Celle ci sera la même partout car le but dans tous les algorithmes est le même, le partage d'information, à la fin de l'exécution, tout processus aura une copie entière du vecteur.\\\\
-Soit n le nombre de processus, et x la place en mémoire pour 1 vecteur. Alors la complexité en mémoire est:
+The goal is to share the same vector bewtween all processus, so the choice of algorithm won't change the results.\\\\
+Let n be the number of processus and x the space taken by the vector in the system's memory:
 \begin{center}
 O(n*x) 
 \end{center}
 
 \section*{Compléxité: Temps}
-Ici nous aurons des complexités différentes pour chaque algorithme.\\
+Here we'll witness different complexities for each algorithms.\\
 \begin{itemize}
-\item[Simple:] Pour cet algorithme on a une simple boucle $for$ qui fait une itération par nombre de processus (-1). Disons que chaque itération prend t temps et qu'il y a n processus, alors la complexité est:  
+\item[Simple:] Here we have a simple code that uses the command $for$ that iterates the same code for all processus, we have then (n-1) cycles. Let each cycle be of time t, and n processus:  
 \begin{center}
-O((n-1)*t) , qu'on écrit O(n*t)
+O((n-1)*t) , or ->  O(n*t)
 \end{center}
 
 
-\item[Anneau:] Maintenant c'est où nous voyons l'intérêt du parallélisme, on va faire le même nombre d'itérations, mais elles seront faites en parallèle par deux processus différents plutôt qu'un seul. Soit le temps de chaque itération temps t et qu'il y a n processus:  
+\item[Anneau:] It's here we see the interest of parallélisme, we are sending the same amount of information, but sinse we do it in parallel we do lesse cycles. Let time per cycle be t, and n the number of processus:  
 \begin{center}
-O(2*t + (n-3)/2 * t ), qu'on écrit O((n/2)*t) 
+O(2*t + (n-3)/2 * t ), or ->  O((n/2)*t) 
 \end{center}
 
-\item[Hypercube:] Pour ce dernier le principe est exactement le même que avant, sauf que plutôt qu'avoir 2 processus qui envoient le vecteur, on en aura plus:
+\item[Hypercube:] For this last one, the train of thought is the same, just that we have even more processus sending information:
 
 \begin{itemize} 
-\item[cycle 1 -> ] on a 1 processus
-\item[cycle 2 -> ] on a 2 processus
-\item[cycle 3 -> ] on a 4 processus
+\item[cycle 1 -> ] we have 1 processus
+\item[cycle 2 -> ] we have 1 processus
+\item[cycle 3 -> ] we have 1 processus
 \item[ ... ]
-\item[cycle n -> ] on a $2^{(n-1)}$ processus 
+\item[cycle n -> ] we have $2^{(n-1)}$ processus
 \end{itemize} 
 
-Pour n processus ils nous faudra donc $log_{2}(n)$ cycles. On a toujours temps t par cycle
+For n processes we will require $log_{2}(n)$ cycles. time t per cycle
 \begin{center}
 O($log_{2}(n)$*t) 
 \end{center}
-
-\section*{Compléxité: Temps}
 \end{itemize}
+\section*{Résultats}
+For the results I used the following code in the batchfile:
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/batch.PNG}\\[1cm] 
+\end{center}
+I had problems to execute this batchfile with nProc = 64, I discussed them with you via email.\\\\\\
+
+For simple, Anneau and Hypercube, I find unexpected results, as Anneau became faster than Hyper as n grew larger. Simple is as expected.
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/graph.PNG}\\[1cm] 
+\end{center}
+
+
+I don't know why but using the simple BCast command didn't work as intended, it was very slow, I don't know if it was just by chance, but I did try it many times, and I always got the same results
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/graph2.PNG}\\[1cm] 
+\end{center}
 
 
 
