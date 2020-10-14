@@ -1,4 +1,3 @@
-parallelisme -> 8/10/2020	
 compilateurs -> 12/10/2020
 ri -> 12/10/2020
 sdc -> 13/10/2020
