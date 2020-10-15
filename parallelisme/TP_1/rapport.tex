@@ -52,14 +52,14 @@
 \begin{document}
 
 \section*{Compléxité: Espace}
-The goal is to share the same vector bewtween all processus, so the choice of algorithm won't change the results.\\\\
+The goal is to share the same vector bewtween all processus, so the choice of algorithm won't change the results.
 Let n be the number of processus and x the space taken by the vector in the system's memory:
 \begin{center}
 O(n*x) 
 \end{center}
 
 \section*{Compléxité: Temps}
-Here we'll witness different complexities for each algorithms.\\
+Here we'll witness different complexities for each algorithms.
 \begin{itemize}
 \item[Simple:] Here we have a simple code that uses the command $for$ that iterates the same code for all processus, we have then (n-1) cycles. Let each cycle be of time t, and n processus:  
 \begin{center}
@@ -106,6 +106,9 @@ I don't know why but using the simple BCast command didn't work as intended, it 
 \begin{center}
 \includegraphics[width=0.7\textwidth]{images/graph2.PNG}\\[1cm] 
 \end{center}
+
+I don't want to talk much about the broadcast function results, because they are probably not accurate. However, I theorised that Hypercube algorithm would be less expensive than Anneau, which it is at the beginning, but when we cross the 32 cores mark, Anneau becomes faster, this was theoretically unexpected, but we were told it would be the result.\\
+My best guess is that we are not taking full advantage of the structure/architecture, and that we will later on find an algorithm that exploits the same idea but does it in another way, because intuitively Hypercube looks much faster than Anneau.
 
 
 
