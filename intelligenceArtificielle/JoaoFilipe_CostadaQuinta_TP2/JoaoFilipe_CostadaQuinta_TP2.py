@@ -1,5 +1,4 @@
 import copy
-import time
 
 
 ####################################################       EXERCICE 1       ####################################################
@@ -75,21 +74,14 @@ print()
 print("#############################            EXO_3 DEBUT            #############################")
 print("#############################            <DFS START>            #############################")
 print()
-DfsTimeStart = time.time()
 calculSolutionExo2(-1)
-DfsTimeEnd = time.time()
-DfsTotalTime = DfsTimeEnd - DfsTimeStart
 print()
 print("#############################            <DFS END>            #############################")
 print("#############################            <BFS START>            #############################")
 print()
-BfsTimeStart = time.time()
 calculSolutionExo2(0)
-BfsTimeEnd = time.time()
-BfsTotalTime = BfsTimeEnd - BfsTimeStart
 print()
 print("#############################            <BFS END>            #############################")
-print('DFS TIME : ', DfsTotalTime, ' BFS TIME : ', BfsTotalTime)
 print("#############################            EXO_3 END              #############################")
 print()
 '''
