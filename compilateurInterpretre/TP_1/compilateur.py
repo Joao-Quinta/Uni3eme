@@ -1,4 +1,4 @@
-with open("C:\salut.txt", "r") as f:
+with open("salut.txt", "r") as f:
     lignes = f.readlines()
     #print(lignes)
     for i in range (0,len(lignes)):
