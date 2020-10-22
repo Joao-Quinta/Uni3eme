@@ -56,6 +56,7 @@ mnmsYIQA = ski.rgb2yiq(mnmsRGB)
 mnmsAgainRGB = ski.yiq2rgb(mnmsYIQA)
 img = [mnmsRGB, mnmsYIQL, mnmsYIQA, mnmsAgainRGB]
 msePython = metric.mean_squared_error(mnmsRGB, mnmsAgainRGB)
+
 labels = ["original", "hand made conversion", "python function rgb2yiq", "python reconversion to RGB, MSE : " + str(msePython)]
 
 rows = 1

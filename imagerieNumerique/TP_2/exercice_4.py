@@ -55,6 +55,7 @@ mnmsYUVA = ski.rgb2ycbcr(mnmsRGB)/255
 mnmsAgainRGB = ski.ycbcr2rgb(mnmsYUVA*255)
 img = [mnmsRGB, mnmsYUVL, mnmsYUVA, mnmsAgainRGB]
 msePython = metric.mean_squared_error(mnmsRGB, mnmsAgainRGB)
+
 labels = ["original", "hand made conversion", "python function ycbcr2rgb",
           "python reconversion to RGB, MSE : " + str(msePython)]
 

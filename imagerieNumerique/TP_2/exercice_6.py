@@ -87,7 +87,6 @@ mnmsRGBAgain = transformImageMerge(mnmsRGBAgainSplit[0], mnmsRGBAgainSplit[1], m
 img = [mnmsRGB, mnmsRGBAgain]
 msePython = metric.mean_squared_error(mnmsRGB, mnmsRGBAgain)
 labels = ["original", "hand made reconversion to RGB, MSE : " + str(msePython)]
-
 rows = 1
 cols = 2
 axes = []
