@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  20 OCT 2020 16:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  22 OCT 2020 20:03
 entering extended mode
 **./CostaDaQuinta_JoaoFilipe.tex
 (CostaDaQuinta_JoaoFilipe.tex
@@ -971,30 +971,133 @@ Package pdftex.def Info: images/unige_csd.png  used on input line 75.
 [1
 
 {C:/Users/qjoao/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./images/un
-ige_csd.png>]pdfTeX warning (ext4): destination with the same identifier (name{
-page.1}) has been already used, duplicate ignored
+ige_csd.png>]
+<images/exercice_2.PNG, id=44, 1169.87062pt x 520.19344pt>
+File: images/exercice_2.PNG Graphic file (type png)
+<use images/exercice_2.PNG>
+Package pdftex.def Info: images/exercice_2.PNG  used on input line 91.
+(pdftex.def)             Requested size: 483.69687pt x 215.08249pt.
+<images/exercice_3_b.PNG, id=45, 1344.52313pt x 337.26pt>
+File: images/exercice_3_b.PNG Graphic file (type png)
+<use images/exercice_3_b.PNG>
+Package pdftex.def Info: images/exercice_3_b.PNG  used on input line 100.
+(pdftex.def)             Requested size: 483.69687pt x 121.33116pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 100--100
+ [] 
+ []
+
+<images/exercice_3_c.PNG, id=46, 1367.1075pt x 216.81pt>
+File: images/exercice_3_c.PNG Graphic file (type png)
+<use images/exercice_3_c.PNG>
+Package pdftex.def Info: images/exercice_3_c.PNG  used on input line 104.
+(pdftex.def)             Requested size: 483.69687pt x 76.70839pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 104--104
+ [] 
+ []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.107 \end{document}
-                     [1]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 107.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 107.
- (CostaDaQuinta_JoaoFilipe.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 107.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 107.
+l.106 \item[(d)]
+                 The mse is deplayed on the (C) image [1 <./images/exercice_2.P
+NG> <./images/exercice_3_b.PNG>]
+<images/exercice_4_b.PNG, id=58, 1336.995pt x 311.66437pt>
+File: images/exercice_4_b.PNG Graphic file (type png)
+<use images/exercice_4_b.PNG>
+Package pdftex.def Info: images/exercice_4_b.PNG  used on input line 114.
+(pdftex.def)             Requested size: 483.69687pt x 112.7555pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 114--114
+ [] 
+ []
+
+<images/exercice_4_c.PNG, id=59, 1364.09625pt x 202.50656pt>
+File: images/exercice_4_c.PNG Graphic file (type png)
+<use images/exercice_4_c.PNG>
+Package pdftex.def Info: images/exercice_4_c.PNG  used on input line 118.
+(pdftex.def)             Requested size: 483.69687pt x 71.80843pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 118--118
+ [] 
+ []
+
+<images/exercice_5_b.PNG, id=60, 1349.79282pt x 344.78813pt>
+File: images/exercice_5_b.PNG Graphic file (type png)
+<use images/exercice_5_b.PNG>
+Package pdftex.def Info: images/exercice_5_b.PNG  used on input line 128.
+(pdftex.def)             Requested size: 483.69687pt x 123.55017pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 128--128
+ [] 
+ []
+
+[2 <./images/exercice_3_c.PNG> <./images/exercice_4_b.PNG> <./images/exercice_4
+_c.PNG>]
+<images/exercice_5_c.PNG, id=70, 1329.46687pt x 496.10344pt>
+File: images/exercice_5_c.PNG Graphic file (type png)
+<use images/exercice_5_c.PNG>
+Package pdftex.def Info: images/exercice_5_c.PNG  used on input line 132.
+(pdftex.def)             Requested size: 483.69687pt x 180.49715pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 132--132
+ [] 
+ []
+
+<images/exercice_6_b.PNG, id=71, 1320.43312pt x 219.06844pt>
+File: images/exercice_6_b.PNG Graphic file (type png)
+<use images/exercice_6_b.PNG>
+Package pdftex.def Info: images/exercice_6_b.PNG  used on input line 143.
+(pdftex.def)             Requested size: 483.69687pt x 80.24844pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 143--143
+ [] 
+ []
+
+<images/exercice_6_c.PNG, id=72, 1337.74782pt x 485.56406pt>
+File: images/exercice_6_c.PNG Graphic file (type png)
+<use images/exercice_6_c.PNG>
+Package pdftex.def Info: images/exercice_6_c.PNG  used on input line 147.
+(pdftex.def)             Requested size: 483.69687pt x 175.56606pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 147--147
+ [] 
+ []
+
+[3 <./images/exercice_5_b.PNG> <./images/exercice_5_c.PNG> <./images/exercice_6
+_b.PNG>]
+<images/exercice_7_a.PNG, id=81, 896.59969pt x 215.30438pt>
+File: images/exercice_7_a.PNG Graphic file (type png)
+<use images/exercice_7_a.PNG>
+Package pdftex.def Info: images/exercice_7_a.PNG  used on input line 163.
+(pdftex.def)             Requested size: 483.69687pt x 116.15092pt.
+
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 163--163
+ [] 
+ []
+
+[4 <./images/exercice_6_c.PNG> <./images/exercice_7_a.PNG>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 169.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 169.
+
+(CostaDaQuinta_JoaoFilipe.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 169.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 169.
 Package rerunfilecheck Info: File `CostaDaQuinta_JoaoFilipe.out' has not change
 d.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 107.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 169.
  ) 
 Here is how much of TeX's memory you used:
- 21294 strings out of 481545
- 404631 string characters out of 2913489
- 839645 words of memory out of 3000000
- 36109 multiletter control sequences out of 15000+200000
- 540340 words of font info for 35 fonts, out of 3000000 for 9000
+ 21361 strings out of 481545
+ 406174 string characters out of 2913489
+ 841645 words of memory out of 3000000
+ 36161 multiletter control sequences out of 15000+200000
+ 540794 words of font info for 37 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,11n,97p,491b,596s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 68i,11n,97p,553b,596s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\qjoao\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\
 ecbx1440.pk> <C:\Users\qjoao\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/
 ec/dpi600\ecrm1000.pk> <C:\Users\qjoao\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour
@@ -1004,10 +1107,11 @@ ec/dpi600\ecrm1000.pk> <C:\Users\qjoao\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour
 cal\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\qjoao\
 AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1440.pk> <C:\Us
 ers\qjoao\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1728.
-pk>
-Output written on CostaDaQuinta_JoaoFilipe.pdf (2 pages, 80102 bytes).
+pk><C:/Users/qjoao/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmr10.pfb>
+Output written on CostaDaQuinta_JoaoFilipe.pdf (5 pages, 7628068 bytes).
 PDF statistics:
- 215 PDF objects out of 1000 (max. 8388607)
- 9 named destinations out of 1000 (max. 500000)
- 114 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 289 PDF objects out of 1000 (max. 8388607)
+ 12 named destinations out of 1000 (max. 500000)
+ 164 words of extra memory for PDF output out of 10000 (max. 10000000)
 

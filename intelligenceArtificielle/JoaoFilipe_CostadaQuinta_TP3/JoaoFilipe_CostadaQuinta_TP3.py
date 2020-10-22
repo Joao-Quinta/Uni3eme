@@ -1,5 +1,10 @@
+import copy
+
+
 # fonction d'évaluation, avec les solutions pour chaque état hardcodé
 def calculTransitionPossible(etat):
+    if etat != "S":
+        etat = etat[0]
     listeRes = []
     if etat == "S":
         listeRes.append(["A", 5])
@@ -16,24 +21,38 @@ def calculTransitionPossible(etat):
     elif etat == "C":
         listeRes.append(["D", 3])
         listeRes.append(["G", 0])
+    elif etat == "H":
+        listeRes.append(["F", 4])
     return listeRes
 
 
-def calculGreedy(res):
-    if len(res) != 0:
-        reponse = res[0][0]
-        coutReponse = res[0][1]
-        for i in range(1, len(res)):
-            if res[i][1] < coutReponse:
-                coutReponse = res[i][1]
-                reponse = res[i][0]
-        return [reponse, coutReponse]
-    return None
+def calculGreedy(res, etatAVisiterX, courant, etatDejaVisite):
+    etatAVisiter = copy.deepcopy(etatAVisiterX)
+    for j in range(0, len(res)):
+        if res[0] not in etatDejaVisite[0]:
+            if len(etatAVisiter[0]) == 0:
+                etatAVisiter[0].append(res[j])
+                etatAVisiter[1].append(courant)
+            else:
+                i = 0
+                while i < len(etatAVisiter[0]):
+                    if res[j][1] < etatAVisiter[0][i][1] and i == len(etatAVisiter[0]) - 1:
+                        etatAVisiter[0].append(res[j])
+                        etatAVisiter[1].append(courant)
+                        break
+                    elif res[j][1] < etatAVisiter[0][i][1]:
+                        i = i + 1
+                    else:
+                        etatAVisiter[0].insert(i, res[j])
+                        etatAVisiter[1].insert(i, courant)
+                        break
+    return etatAVisiter
 
 
 def calculSolutionGreedy():
     etatCourant = None
     parentEtatCourant = None
+    chemin = "S"
     etatInitial = "S"
     etatFinal = "G"
     etatAVisiter = [[], []]
@@ -43,31 +62,22 @@ def calculSolutionGreedy():
     etatAVisiter[1].append([])
     while len(etatAVisiter) > 0:
         etatCourant = etatAVisiter[0].pop()
+        print(etatCourant)
+        if etatCourant != "S":
+            chemin = chemin + " --> " + etatCourant[0]
         parentEtatCourant = etatAVisiter[1].pop()
-        print("courant : ", etatCourant, " pere : ", parentEtatCourant)
-        if etatCourant == etatFinal:
+        if etatCourant != "S" and etatCourant[0] == etatFinal:
             etatDejaVisite[0].append(etatCourant)
             etatDejaVisite[1].append(parentEtatCourant)
             break
         etatDejaVisite[0].append(etatCourant)
         etatDejaVisite[1].append(parentEtatCourant)
         listePossibilites = calculTransitionPossible(etatCourant)
-        etatPossibleMin = calculGreedy(listePossibilites)
-        if etatPossibleMin[0] not in etatDejaVisite[0]:
-            etatAVisiter[0].append(etatPossibleMin[0])
-            etatAVisiter[1].append(etatCourant)
+        etatAVisiter = calculGreedy(listePossibilites, etatAVisiter, etatCourant, etatDejaVisite)
 
-    cheminEtats = []
-    etatCourantBacktracking = etatCourant
-    parentEtatCourantBacktracking = parentEtatCourant
-    while etatCourantBacktracking != etatInitial:
-        cheminEtats.insert(0, etatCourantBacktracking)
-        etatCourantBacktracking = parentEtatCourantBacktracking
-        parentEtatCourantBacktracking = etatDejaVisite[1][etatDejaVisite[0].index(etatCourantBacktracking)]
-    cheminEtats.insert(0, etatCourantBacktracking)
     print()
-    print("voici le chemin en etat depuis  initial à final :")
-    print(cheminEtats)
+    print("voici l ordre dans lequel les etats ont ete visité :")
+    print(chemin)
     print()
 
 

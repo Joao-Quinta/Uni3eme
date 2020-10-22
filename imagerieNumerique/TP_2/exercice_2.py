@@ -27,7 +27,7 @@ mnms = mpimg.imread("mnms_512.jpg")
 mnmsR = transformImage(mnms, 0)
 mnmsG = transformImage(mnms, 1)
 mnmsB = transformImage(mnms, 2)
-imagess = [mnmsR, mnmsG, mnmsB]
+imagesAll = [mnmsR, mnmsG, mnmsB]
 
 labelImagesDone = ['*0', '*0.1', '*0.2', '*0.3', '*0.4', '*0.5', '*0.6', '*0.7', '*0.8', '*0.9', '*1']
 labelColors = ['RED -> ', 'GREEN -> ', 'BLUE -> ']
@@ -36,7 +36,7 @@ allImages = []
 for i in range(0, len(labelColors)):
     for j in range(0, len(labelImagesDone)):
         allLabels.append(labelColors[i] + labelImagesDone[j])
-        allImages.append(imagess[i][j])
+        allImages.append(imagesAll[i][j])
 
 rows = 3
 cols = 11
