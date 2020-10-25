@@ -4,6 +4,7 @@
 
 import copy
 
+
 def replaceString(string, old, new):
     string1 = ""
     string2 = ""
@@ -15,7 +16,8 @@ def replaceString(string, old, new):
 
 
 # print(replaceString("abc", "b", "s"))
-def enleveNonTer(arbre):
+def enleveNonTer(arbreArg):
+    arbre = arbreArg.copy()
     i = 0
     for i in range(0, len(arbre[-1])):
         if arbre[-1][i] == "D":
@@ -45,8 +47,8 @@ def enleveNonTerEnP(arbre):
         z = z + 1
 
 
-def opArbre(arbre, quoi, valeur, op):
-    print(arbre, quoi, "asdasdasd")
+def opArbre(arbreAppel, quoi, valeur, op):
+    arbre = arbreAppel.copy()
     if quoi == "nb":
         if "F" in arbre[-1]:
             arbre.append(replaceString(arbre[-1], "F", str(valeur)))
@@ -102,44 +104,37 @@ def opArbre(arbre, quoi, valeur, op):
             return arbre
 
 
-
 def checkNextOp(ligne, arbre):
     nb = 0
-    parentheses = False
-    if len(ligne) != 1:
-        parentheses = True
     for i in range(0, len(ligne)):
-        for j in range(0,ligne[i]):
-            if ligne[i][j] in "+*":
-                arbre = opArbre(arbre, "op", nb, ligne[i][j])
-            elif ligne[j] in "-0123456789":
+        if i % 2 == 0:
+            test = getIndexListeOperation(list(ligne[i]))  # [1]
+            s = 0
+            isOP = False
+            for z in range(0, len(test)):
+                if not isOP:
+                    arbre = opArbre(arbre, "nb", ligne[i][s:test[z]], "")
+                    arbre = opArbre(arbre, "op", nb, str(ligne[i][test[z]]))
+                    s = test[z] + 1
+            arbre = opArbre(arbre, "nb", ligne[i][test[-1] + 1:len(ligne[i])], "")
+            arbre.append(arbre[-1].replace("G", "e"))
+            print(arbre)
 
+        elif i % 2 == 1:
+            arbre = opArbre(arbre, "op", nb, "(")
+            test = getIndexListeOperation(list(ligne[i]))  # [1]
+            s = 0
+            isOP = False
+            for z in range(0, len(test)):
+                if not isOP:
+                    arbre = opArbre(arbre, "nb", ligne[i][s:test[z]], "")
+                    arbre = opArbre(arbre, "op", nb, str(ligne[i][test[z]]))
+                    s = test[z] + 1
+                arbre = opArbre(arbre, "nb", ligne[i][test[-1] + 1:len(ligne[i])], "")
+                arbre.append(arbre[-1].replace("G", "e"))
 
-# # fonction qui recoit la ligne, detecte la premiere operation, et appelle recursiveConstruction avec les bonnes infos
-#
-# # ligne est la ligne de code
-#
-# # elle retourne la ligne de code apres l evaluation ->
-# # si elle recoit "3+3" -> recursiveConstruction("3","+"), et retorune "3"
-# # si elle recoit "3" -> recursiveConstruction("3","over"), et retorune ""
-# j = 1
-# while j < len(ligne):
-#     if ligne[j] in "+*(":
-#         # print("is the number : ", ligne[0:i])
-#         # print("is the op : ", ligne[i])
-#         # print("we return this : ", ligne[i + 1:len(ligne)])
-#
-#         # si ligne = "01234" -> ligne[0:1] = "0"
-#         # recursiveConstruction(ligne[0:j], ligne[j])
-#         # comme ca on retourne le reste de eval si ligne = "01234" -> ligne[1:len(ligne)] = 1234 (no need len ligne en vrai)
-#         return ligne[j + 1:len(ligne)]
-#     # check si c est nombre
-#     elif ligne[j] in "-0123456789":
-#         # on garde le - ici pour les nb negatifs
-#         j = j + 1
-#         # tant que c est pas une operation, c est un nb, donc on itére
-# # recursiveConstruction(ligne[0:j], "over")
-# return ""
+        arbre[-1] = arbre[-1].replace("D", "e")
+    return arbre
 
 
 def checkOrder(ligne, start):
@@ -243,16 +238,136 @@ def parserP(ligne):
                 [parentheseDroite, parentheseGauche]]
 
 
-def transformListe(listeParenthesesIci2):
-    newListeIci = []
+def transformListe(listeParenthesesIci2, liste):
+    newListeIci = liste.copy()
     if len(listeParenthesesIci2) == 1:
         newListeIci.append(listeParenthesesIci2[0])
     else:
         for i in range(0, 3):
-            if listeParenthesesIci2[i][0] != 0:
+            if listeParenthesesIci2[i][0] != 0 and len(listeParenthesesIci2[i]) == 1:
                 newListeIci.append(listeParenthesesIci2[i][0])
-
+            elif len(listeParenthesesIci2[i]) > 1:
+                newListeIci = transformListe(listeParenthesesIci2[i], newListeIci)
     return newListeIci
+
+
+def getIndexListeOperation(liste_input):
+    index = 0
+    listeIndexOperateur = []
+    debutFinString = [34, 39, 44, 96, 8216, 8217]  # " ' ‘
+    multiAddSpaceEqual = [32, 42, 43, 61]
+    while index < len(liste_input):
+        # for element in liste_input:
+        if (ord(liste_input[index]) in range(65, 91)) or (ord(liste_input[index]) in range(97, 123)) or (
+                ord(liste_input[index]) in debutFinString):
+            isItAString = False
+            isThereAnErrorInVariable = False
+            isItTheEndOfListe = False
+            compteurDebutFinString = 0
+            if ord(liste_input[index]) in debutFinString:
+                compteurDebutFinString += 1
+                isItAString = True
+            if index + 1 >= len(liste_input):
+                isItTheEndOfListe = True
+                index_copy = copy.deepcopy(index)
+            else:
+                index_copy = copy.deepcopy(index) + 1
+            myString = str(liste_input[index])
+            myVar = str(liste_input[index])
+            # variable
+            if not isItAString:
+                while (ord(liste_input[index_copy]) in range(65, 91)) or (
+                        ord(liste_input[index_copy]) in range(97, 123)) or ord(liste_input[index_copy]) in range(48,
+                                                                                                                 58):
+                    # 1 nombre dans liste, break tout de suite
+                    if isItTheEndOfListe:
+                        index_copy += 1
+                        break
+                    myVar = myVar + str(liste_input[index_copy])
+
+                    if index_copy + 1 < len(liste_input):
+                        index_copy += 1
+                    else:
+                        index_copy += 1
+                        break
+            # string
+            else:
+                isThereErrorAfterString = False
+                while (ord(liste_input[index_copy]) in range(65, 91)) or (
+                        ord(liste_input[index_copy]) in range(97, 123)) or (
+                        ord(liste_input[index_copy]) in debutFinString) or (
+                        ord(liste_input[index_copy]) in range(48, 58)):
+                    # si on a un élément après le string -> error : exemple : 'abcd'6
+                    if compteurDebutFinString >= 2:
+                        isThereErrorAfterString = True
+                    # si on trouve le 2ème guillemet pour fermer le string, on l'indique
+                    if ord(liste_input[index_copy]) in debutFinString:
+                        compteurDebutFinString += 1
+
+                    myString = myString + str(liste_input[index_copy])
+                    if index_copy + 1 != len(liste_input):
+                        index_copy += 1
+                    else:
+                        index_copy += 1
+                        break
+                # si le string n'est pas fermée on l'indique
+
+            index = copy.deepcopy(index_copy)
+        # space
+        elif ord(liste_input[index]) == 32:
+
+            index += 1
+        # numbers, real, negatifs
+        elif ord(liste_input[index]) == 45 or ord(liste_input[index]) in range(48, 58):
+            startsWithNegation = False
+            isItTheEndOfListe = False
+            isThereAnErrorInVariable = False
+            if ord(liste_input[index]) == 45:
+                startsWithNegation = True
+            isItAreal = False
+            if index + 1 >= len(liste_input):
+                isItTheEndOfListe = True
+                index_copy = copy.deepcopy(index)
+            else:
+                index_copy = copy.deepcopy(index) + 1
+            myNumber = str(liste_input[index])
+            while ord(liste_input[index_copy]) in range(48, 58) or ord(liste_input[index_copy]) == 46 or (
+                    ord(liste_input[index_copy]) in range(65, 91)) or (
+                    ord(liste_input[index_copy]) in range(97, 123)) or (ord(liste_input[index_copy]) in debutFinString):
+
+                if (ord(liste_input[index_copy]) in range(65, 91)) or (
+                        ord(liste_input[index_copy]) in range(97, 123)) or (
+                        ord(liste_input[index_copy]) in debutFinString):
+                    isThereAnErrorInVariable = True
+
+                # 1 nombre dans liste, break tout de suite
+                if isItTheEndOfListe:
+                    index_copy += 1
+                    break
+                # si possède un '.' -> réel
+                if ord(liste_input[index_copy]) == 46:
+                    isItAreal = True
+                myNumber = myNumber + str(liste_input[index_copy])
+                # si dernier élément liste break sinon continue
+                if index_copy + 1 < len(liste_input):
+                    index_copy += 1
+                else:
+                    index_copy += 1
+                    break
+
+            index = copy.deepcopy(index_copy)
+        # elif ord(liste_input[index]) in range(48,58):
+        #    print(liste_input[index], " est un entier.")
+        #    index+=1
+        elif ord(liste_input[index]) == 43:
+            listeIndexOperateur.append(index)
+            index += 1
+        elif ord(liste_input[index]) == 42:
+            listeIndexOperateur.append(index)
+            index += 1
+        else:
+            index += 1
+    return listeIndexOperateur
 
 
 with open("salut.txt", "r") as f:
@@ -268,10 +383,13 @@ with open("salut.txt", "r") as f:
         listeParentheses = parserP(lignes[i])
         arbre = ["E", "TD"]
         print(listeParentheses)
-        checkOrderOperations = checkOperationsOrder(listeParentheses)
-        if checkOrderOperations[0] and checkOrderOperations[1]:
-            newListe = transformListe(listeParentheses)
-            print(newListe)
-            #checkNextOp(newListe, arbre)
-        else:
-            print("la formule est non accepte par la grammaire")
+        # checkOrderOperations = checkOperationsOrder(listeParentheses)
+        # if checkOrderOperations[0] and checkOrderOperations[1]:
+        newListe = transformListe(listeParentheses, [])
+        print(newListe)
+        arbre = checkNextOp(newListe, arbre)
+        arbre.append(arbre[-1].replace("e", ""))
+        print(arbre, " hallo marche")
+        print(eval(arbre[-1]), " s")
+        # else:
+        #     print("la formule est non accepte par la grammaire")
