@@ -2,6 +2,29 @@
 # (1) faire les parentheses
 # (2) evaluer l equation
 
+import copy
+'''
+#333+((2+1)+2) -> ['333','+', '(2+1)', '((2+1)+2)']
+def evaluer(expression):
+    i = 0
+    listeIndiceParentheses = [i for i in range(len(expression)) if "(" in expression[i]]
+    while i < len(expression):
+        if len(listeIndiceParentheses) != 0:
+            print()
+'''
+def remplacer(listeExpression, expression,aRemplacer) :
+    #if expression[0] in expression[1]:
+    print("listeExpression",listeExpression)
+    if len(listeExpression) == 0:
+        return expression
+    if listeExpression[1] == "+":
+        result = int(listeExpression[0]) + int(listeExpression[2])
+    else:
+        result = int(listeExpression[0]) * int(listeExpression[2])
+    expression = expression.replace(aRemplacer, str(result))
+    print("expression",expression)
+    return expression
+
 
 def recursiveConstruction(number, op):
     # fonction qui print les derivations de l arbre selon l opération
@@ -17,9 +40,11 @@ def recursiveConstruction(number, op):
     elif op == "over":
         # "triche" l opération over symboliser quand nous sommes au dernier chiffre de l operation
         print("E -> TD || E -> FGD || E -> ", number, "GD || E -> ", number, "eD || E -> ", number, "ee")
+    elif op == "(" or op == ")":
+        print("E -> TD || E -> FGD || E -> (", number, ")GD || E -> ", number, "eD || E -> (", number, ")ee")
 
 
-def checkNextOp(ligne):
+def checkNextOp(ligne, isThereParenthese):
     # fonction qui recoit la ligne, detecte la premiere operation, et appelle recursiveConstruction avec les bonnes infos
 
     # ligne est la ligne de code
@@ -28,39 +53,135 @@ def checkNextOp(ligne):
     # si elle recoit "3+3" -> recursiveConstruction("3","+"), et retorune "3"
     # si elle recoit "3" -> recursiveConstruction("3","over"), et retorune ""
     j = 1
+    compteurParentheses = 0
+    print("ligne", ligne)
+    print("len(ligne)",len(ligne))
     while j < len(ligne):
-        if ligne[j] in "+*(":
+        if ligne[j] in "+*" or compteurParentheses == 2:
+
             # print("is the number : ", ligne[0:i])
             # print("is the op : ", ligne[i])
             # print("we return this : ", ligne[i + 1:len(ligne)])
 
             # si ligne = "01234" -> ligne[0:1] = "0"
-            recursiveConstruction(ligne[0:j], ligne[j])
+            #print("ligne[0:j]",ligne[0:j])
+            #print("ligne[j + 1:len(ligne)]",ligne[j + 1:len(ligne)])
+
+            if compteurParentheses == 2:
+                recursiveConstruction(ligne[1:j], ligne[0])
+            else:
+                recursiveConstruction(ligne[0:j], ligne[j])
             # comme ca on retourne le reste de eval si ligne = "01234" -> ligne[1:len(ligne)] = 1234 (no need len ligne en vrai)
-            return ligne[j + 1:len(ligne)]
+            return ligne[j + 1:len(ligne)], ligne[0:j], ligne[j]
         # check si c est nombre
         elif ligne[j] in "-0123456789":
             # on garde le - ici pour les nb negatifs
             j = j + 1
             # tant que c est pas une operation, c est un nb, donc on itére
+
+        elif ligne[j] == "(" or ligne[j] == ")":
+            compteurParentheses +=1
+            j = j + 1
+
     recursiveConstruction(ligne[0:j], "over")
-    return ""
+    return "", ligne[0:j], ""
 
 
-with open("salut.txt", "r") as f:
+with open("/Users/edin/Desktop/salut.txt", "r") as f:
     lignes = f.readlines()
-    for i in range(0, len(lignes)):
+    listeKeepTrackParenthesis = []
+    listeKeepTrackWOParenthesis = []
+    for i in range(len(lignes)):
         # sil y a plusieurs lignes, alors la fin des lignes cest \n, cette boucle if enleve les \n justement (s il y en a)
         if lignes[i][-1] == "\n":
             lignes[i] = lignes[i][:-1]
     print(lignes)
-    for i in range(0, len(lignes)):
-        print("E = ", lignes[i])
-        string = checkNextOp(lignes[i])
-        while len(string) > 0:
-            string = checkNextOp(string)
-        print("E = ", lignes[i], " -> ")
+    for i in range(len(lignes)):
+        compteurParentheseColler = 0
+        groupeDeParenthese = []
+        if "(" and ")" in lignes[i]: # TEST AVEC : E = 333+(((2+1)+2)+2)
+            #on garde que l'expression avec parenthèses : ex : (((2+1)+2)+2)
+            test = lignes[i][lignes[i].index("("):lignes[i].rindex(")")+1]
+            numberOfParentheses = test.count("(")
+            compteur = 0
+            #on compte combien de parenthèse à la suite on a, ex : (((2+1)+2)+2) ici : 3
+            while compteur < len(test):
+                if test[compteur] == "(":
+                    compteurParentheseColler+=1
 
+                if test[compteur] == ")":
+                    groupeDeParenthese.append(compteurParentheseColler)
+                    compteurParentheseColler = 0
+                compteur+=1
+            print("groupeDeParenthese",groupeDeParenthese)
+            print("test",test)
+            aRemplacerFinal = copy.deepcopy(test)
+            #pour chaque groupe on va évaluer les expression
+            for groupe in groupeDeParenthese:
+                if groupe == 0:
+                    pass
+
+                for k in range(groupe):
+                    listeForEvaluation = []
+                    #on retient que la premiere parenthese du calcul, ici : 2+1
+                    firstParentheseNumber = test[test.rindex("(")+1:test.index(")")]
+                    #on sauvegarde cette parenthèse qu'on va remplacer, ici : (2+1)
+                    aRemplacer = test[test.rindex("("):test.index(")")+1]
+                    #index = test.index("(") + compteurIndexParenthese
+                    print("firstParentheseNumber",firstParentheseNumber)
+                    print("aRemplacer",aRemplacer)
+                    print(numberOfParentheses)
+                    #on va checker chaque expression dans la parenthèse
+                    while len(firstParentheseNumber) > 0:
+                        print("test",test)
+                        #on retourne l'élément suivant du check, le nombre d'avant l'opération, et le signe, ici : 1, 2, +
+                        firstParentheseNumber, number, signe = checkNextOp(firstParentheseNumber,True)
+                        #on enregistre le nombre avant l'opération
+                        listeForEvaluation.append(number)
+                        #on enregistre le signe
+                        if signe != "":
+                            listeForEvaluation.append(signe)
+                        print("firstParentheseNumber, number, signe",firstParentheseNumber, number, signe)
+                    #on va évaluer notre parenthèse et la remplacer pour pouvoir évaluer la parenthèse suivante
+                    test = remplacer(listeForEvaluation, test,aRemplacer)
+                    print("test after = ",test)
+                print("aRemplacerFinal",aRemplacerFinal)
+                print("lignes[i]",lignes[i])
+            #une fois toutes les parenthèses remplacées, on va remplacer le résultat des parenthèses dans la liste principale.
+            lignes[i] = lignes[i].replace(str(aRemplacerFinal), test)
+
+
+
+
+
+        print("lignes", lignes)
+        print("E = ", lignes[i])
+        string, ok,signe = checkNextOp(lignes[i],False)
+        print("string", string)
+        print("ok",ok)
+        print("signe", signe)
+
+        while len(string) > 0:
+            '''
+            if "(" and ")" in string:
+                #((2+1)+2)
+                temp = string.rindex(")")
+                stringWOend = string[:temp] + ')'
+                stringWOend = checkNextOp(stringWOend,False)
+                #stringWOend =  string[:temp].replace("(","",1)
+                print("resr",stringWOend)
+                print("there are parenthesis")
+                listeKeepTrackWOParenthesis.append(stringWOend)
+                listeKeepTrackParenthesis.append(string)
+                #string = copy.deepcopy(stringWOend)
+            '''
+            string,ok,signe = checkNextOp(string,False)
+            print("string",string)
+            print("ok",ok)
+            print("signe",signe)
+        print("E = ", lignes[i], " -> ")
+        print("listeKeepTrackWOParenthesis",listeKeepTrackWOParenthesis)
+        print(listeKeepTrackParenthesis)
 # def parserP(ligne):
 #     if ligne == 0:
 #         return [ligne]
