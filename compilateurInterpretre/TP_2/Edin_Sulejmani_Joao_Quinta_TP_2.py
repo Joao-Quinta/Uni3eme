@@ -1,6 +1,10 @@
-# il manque faire :
-# (1) faire les parentheses
-# (2) evaluer l equation
+'''
+Compilateurs et interprètes TP_2
+
+Travail développé par:
+Joao Quinta
+Edin Sulejmani
+'''
 
 import copy
 
@@ -15,24 +19,23 @@ def replaceString(string, old, new):
     return string1 + new + string2
 
 
-# print(replaceString("abc", "b", "s"))
-def enleveNonTer(arbreArg):
+def enleveNonTer(arbreArg, symbol):
     arbre = arbreArg.copy()
-    i = 0
-    for i in range(0, len(arbre[-1])):
-        if arbre[-1][i] == "D":
-            arbre[-1] = replaceString(arbre[-1], "D", "e")
-        elif arbre[-1][i] == "G":
-            arbre[-1] = replaceString(arbre[-1], "G", "e")
-        elif arbre[-1][i] == "(":
-            return arbre
-        i = i + 1
-
-
-def enleveNonTerEnP(arbre):
     j = 0
     for i in range(0, len(arbre[-1])):
-        if arbre[-1][i] == "(":
+        if arbre[-1][i] == symbol:
+            j = i
+    stringTemp = arbre[-1][0:j]
+    stringTemp = stringTemp.replace("G", "")
+    stringTemp = stringTemp.replace("D", "")
+    arbre[-1] = stringTemp + arbre[-1][j: len(arbre[-1])]
+    return arbre
+
+
+def enleveNonTerEnP(arbre, symbol):
+    j = 0
+    for i in range(0, len(arbre[-1])):
+        if arbre[-1][i] == symbol:
             j = i + 1
             break
         else:
@@ -62,7 +65,7 @@ def opArbre(arbreAppel, quoi, valeur, op):
             arbre.append(replaceString(arbre[-1], "T", "FG"))
             arbre.append(replaceString(arbre[-1], "F", str(valeur)))
             return arbre
-    if quoi == "op":
+    elif quoi == "op":
         if op == "+":
             if "D" in arbre[-1]:
                 arbre.append(replaceString(arbre[-1], "D", "+E"))
@@ -84,56 +87,64 @@ def opArbre(arbreAppel, quoi, valeur, op):
                 arbre.append(replaceString(arbre[-1], "G", "*T"))
                 return arbre
         elif op == "(":
-            if "F" in arbre[-1]:
-                arbre.append(replaceString(arbre[-1], "F", "(E)"))
-                arbre = enleveNonTer(arbre)
-                return arbre
-            elif "T" in arbre[-1]:
-                arbre.append(replaceString(arbre[-1], "T", "FG"))
-                arbre.append(replaceString(arbre[-1], "F", "(E)"))
-                arbre = enleveNonTer(arbre)
-                return arbre
-            elif "E" in arbre[-1]:
-                arbre.append(replaceString(arbre[-1], "E", "TD"))
-                arbre.append(replaceString(arbre[-1], "T", "FG"))
-                arbre.append(replaceString(arbre[-1], "F", "(E)"))
-                arbre = enleveNonTer(arbre)
-                return arbre
+            if valeur == "+":
+                if "D" in arbre[-1]:
+                    arbre.append(replaceString(arbre[-1], "D", "+E"))
+                    arbre.append(replaceString(arbre[-1], "E", "TD"))
+                    arbre.append(replaceString(arbre[-1], "T", "F"))
+                    arbre.append(replaceString(arbre[-1], "F", "(E)"))
+                    return enleveNonTer(arbre, "(")
+                elif "E" in arbre[-1]:
+                    arbre.append(replaceString(arbre[-1], "E", "TD"))
+                    arbre.append(replaceString(arbre[-1], "D", "+E"))
+                    arbre.append(replaceString(arbre[-1], "E", "TD"))
+                    arbre.append(replaceString(arbre[-1], "T", "F"))
+                    arbre.append(replaceString(arbre[-1], "F", "(E)"))
+                    return enleveNonTer(arbre, "(")
+            if valeur == "*":
+                if "T" in arbre[-1]:
+                    arbre.append(replaceString(arbre[-1], "T", "FG"))
+                    arbre.append(replaceString(arbre[-1], "G", "*T"))
+                    arbre.append(replaceString(arbre[-1], "T", "F"))
+                    arbre.append(replaceString(arbre[-1], "F", "(E)"))
+                    return enleveNonTer(arbre, "(")
+                elif "E" in arbre[-1]:
+                    arbre.append(replaceString(arbre[-1], "E", "TD"))
+                    arbre.append(replaceString(arbre[-1], "T", "FG"))
+                    arbre.append(replaceString(arbre[-1], "G", "*T"))
+                    arbre.append(replaceString(arbre[-1], "T", "F"))
+                    arbre.append(replaceString(arbre[-1], "F", "(E)"))
+                    return enleveNonTer(arbre, "(")
         elif op == ")":
-            arbre = enleveNonTerEnP(arbre)
+            arbre = enleveNonTer(arbre, ")")
             return arbre
 
 
 def checkNextOp(ligne, arbre):
     nb = 0
     for i in range(0, len(ligne)):
-        if i % 2 == 0:
-            test = getIndexListeOperation(list(ligne[i]))  # [1]
-            s = 0
-            isOP = False
-            for z in range(0, len(test)):
-                if not isOP:
-                    arbre = opArbre(arbre, "nb", ligne[i][s:test[z]], "")
-                    arbre = opArbre(arbre, "op", nb, str(ligne[i][test[z]]))
-                    s = test[z] + 1
-            arbre = opArbre(arbre, "nb", ligne[i][test[-1] + 1:len(ligne[i])], "")
-            arbre.append(arbre[-1].replace("G", "e"))
-            print(arbre)
+        if i % 2 == 1:
+            arbre = opArbre(arbre, "op", ligne[i][0], "(")
+            ligne[i] = ligne[i][1:len(ligne[i])]
+        test = getIndexListeOperation(list(ligne[i]))  # [1]
+        isVal = True
+        if ligne[i][0] in "+*":
+            isVal = False
+        s = 0
+        for z in range(0, len(test)):
+            if isVal:
+                arbre = opArbre(arbre, "nb", ligne[i][s:test[z]], "")
+                arbre = opArbre(arbre, "op", nb, str(ligne[i][test[z]]))
+                s = test[z] + 1
+            else:
+                test.append(len(ligne))
+                arbre = opArbre(arbre, "op", nb, str(ligne[i][test[z]]))
+                arbre = opArbre(arbre, "nb", ligne[i][test[z] + 1:test[z + 1]], "")
 
-        elif i % 2 == 1:
-            arbre = opArbre(arbre, "op", nb, "(")
-            test = getIndexListeOperation(list(ligne[i]))  # [1]
-            s = 0
-            isOP = False
-            for z in range(0, len(test)):
-                if not isOP:
-                    arbre = opArbre(arbre, "nb", ligne[i][s:test[z]], "")
-                    arbre = opArbre(arbre, "op", nb, str(ligne[i][test[z]]))
-                    s = test[z] + 1
-                arbre = opArbre(arbre, "nb", ligne[i][test[-1] + 1:len(ligne[i])], "")
-                arbre.append(arbre[-1].replace("G", "e"))
-
-        arbre[-1] = arbre[-1].replace("D", "e")
+        arbre = opArbre(arbre, "nb", ligne[i][test[-1] + 1:len(ligne[i])], "")
+        arbre.append(arbre[-1].replace("G", "e"))
+        if i % 2 == 1:
+            arbre = opArbre(arbre, "op", ligne[i][0], ")")
     return arbre
 
 
@@ -239,12 +250,19 @@ def parserP(ligne):
 
 
 def transformListe(listeParenthesesIci2, liste):
+    symbol = ""
     newListeIci = liste.copy()
     if len(listeParenthesesIci2) == 1:
         newListeIci.append(listeParenthesesIci2[0])
     else:
         for i in range(0, 3):
-            if listeParenthesesIci2[i][0] != 0 and len(listeParenthesesIci2[i]) == 1:
+            if i == 0:
+                newListeIci.append(listeParenthesesIci2[i][0][0:len(listeParenthesesIci2[i][0]) - 1])
+                symbol = listeParenthesesIci2[i][0][-1]
+            elif i == 1 and len(listeParenthesesIci2[i]) == 1 and listeParenthesesIci2[i] != [0]:
+                listeParenthesesIci2[i][0] = symbol + listeParenthesesIci2[i][0]
+                newListeIci.append(listeParenthesesIci2[i][0])
+            elif i == 2 and len(listeParenthesesIci2[i]) == 1 and listeParenthesesIci2[i] != [0]:
                 newListeIci.append(listeParenthesesIci2[i][0])
             elif len(listeParenthesesIci2[i]) > 1:
                 newListeIci = transformListe(listeParenthesesIci2[i], newListeIci)
@@ -357,7 +375,7 @@ def getIndexListeOperation(liste_input):
 
             index = copy.deepcopy(index_copy)
         # elif ord(liste_input[index]) in range(48,58):
-        #    print(liste_input[index], " est un entier.")
+
         #    index+=1
         elif ord(liste_input[index]) == 43:
             listeIndexOperateur.append(index)
@@ -372,24 +390,20 @@ def getIndexListeOperation(liste_input):
 
 with open("salut.txt", "r") as f:
     lignes = f.readlines()
-    # cette boucle enleve tous les "\n" aux lignes s il y en a
     for i in range(0, len(lignes)):
         if lignes[i][-1] == "\n":
             lignes[i] = lignes[i][:-1]
-    print(lignes)
-
     for i in range(0, len(lignes)):
-        print("E = ", lignes[i])
+        print(lignes[i])
         listeParentheses = parserP(lignes[i])
         arbre = ["E", "TD"]
-        print(listeParentheses)
-        # checkOrderOperations = checkOperationsOrder(listeParentheses)
-        # if checkOrderOperations[0] and checkOrderOperations[1]:
         newListe = transformListe(listeParentheses, [])
-        print(newListe)
         arbre = checkNextOp(newListe, arbre)
         arbre.append(arbre[-1].replace("e", ""))
-        print(arbre, " hallo marche")
-        print(eval(arbre[-1]), " s")
-        # else:
-        #     print("la formule est non accepte par la grammaire")
+        arbre.append(arbre[-1].replace("D", ""))
+        arbre.append(arbre[-1].replace("G", ""))
+        print("voici l'évolution de l'arbre : ")
+        print(arbre)
+        print("evaluation : ")
+        print(eval(arbre[-1]))
+
