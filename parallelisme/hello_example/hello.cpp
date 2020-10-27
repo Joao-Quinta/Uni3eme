@@ -22,7 +22,6 @@ int main(int argc, char **argv) {
       MPI_Recv(&sumH, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
       sumTot = sumTot + sumH;
       //std::cout << "I'm process " << myRank << " I have received a message from :" << i << std::endl;
-
     }
 
     std::cout << "I'm process " << myRank << " I have received all message, sum is :" << sumTot << std::endl;
@@ -34,7 +33,6 @@ int main(int argc, char **argv) {
     for(auto i: v) sum += i;
     std::cout << "Hello, I'm process " << myRank << " and the sum of my vector is " << sum << std::endl;
     MPI_Send(&sum, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
-    //MPI_Send(v.data(), v.size(), MPI_INT, 1, 0, MPI_COMM_WORLD);
   }
 
   MPI_Finalize();

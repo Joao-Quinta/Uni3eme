@@ -52,7 +52,6 @@ int main(int argc, char **argv) {
   int nLinesRestantes = dimY;
   int nLinesProc = ceil(nLinesRestantes/procSansL);
 
-
   while (nLinesRestantes > 0) {
     if (displacements.size() == 0){
       displacements.push_back(0);
@@ -69,27 +68,32 @@ int main(int argc, char **argv) {
   Array2D<double> heatReceive(dimX, sizes[myRank], 0); // La matrice de la chaleur
   Array2D<double> tmpReceive(dimX, sizes[myRank], 0);  // Une matrice temporaire
 
+
   int tailleBufferRecu = dimX * sizes[myRank];
 
-  //MPI_Scatterv(&heat, sizes.data(), displacements.data(), MPI_DOUBLE, &heatReceive,tailleBufferRecu, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatterv(&heat(0,0), sizes.data(), displacements.data(),
+              MPI_DOUBLE, &heatReceive(0,0), tailleBufferRecu,
+              MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   //std::cout << "I'm process " << myRank << " and there are "<< nProc << " procs" <<std::endl;
   if (myRank == 0){
-    for (int i = 0; i<dimY; i++){
+    for (int i = 0; i < dimY; i++){
       for(int j = 0; j < dimX; j++){
         printf(" %f ", heat(j,i));
       }printf("\n" );
     }
   }
+
+  printf("my rank is : %d\n", myRank);
+  for (int i = 0; i < sizes[myRank]; i++){
+    for(int j = 0; j < dimX; j++){
+      printf("%f ", heatReceive(j,i));
+    }printf("\n" );
+  }printf("\n" );
   // printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
   // print elements recus par chaque
 
-  if(myRank > 0){
-    MPI_Status status;
-    int b;
-    MPI_Recv(&b, 1, MPI_INT, myRank-1, 0, MPI_COMM_WORLD, &status);
-  }
-
+/*
   for (int i = displacements[myRank]; i < displacements[myRank] + sizes[myRank]; i++){
     //printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
     for (int j = 0; j < dimX; j++){
@@ -97,26 +101,79 @@ int main(int argc, char **argv) {
       //printf("heatReceive : (%d , %d) = heat : (%d , %d)\n", j,z,j,i);
       heatReceive(j,z) = heat(j,i);
     }
-  }
-  printf(" my rank is : %d\n", myRank);
-  for (int i = 0; i< sizes[myRank]; i++){
-    for(int j = 0; j < dimX; j++){
-      printf(" %f ", heatReceive(j,i));
-    }printf("\n" );
-  }
-  if (myRank<nProc-1){
-    int b = 1;
-    MPI_Send(&b, 1, MPI_INT, myRank+1, 0, MPI_COMM_WORLD);
-  }
+  }*/
 
-  vectorEnvoieTop = std::vector<int>(dimX, 0);
-  vectorRecuTop = std::vector<int>(dimX, 0);
-  vectorEnvoieBot = std::vector<int>(dimX, 0);
-  vectorRecuBot = std::vector<int>(dimX, 0);
 
+
+/*
+
+  std::vector<double> vectorEnvoieBot;
+  std::vector<double> vectorRecuBot;
+  std::vector<double> vectorEnvoieTop;
+  std::vector<double> vectorRecuTop;
+
+  for (int iter = 0; iter < maxT; iter ++){
+    int j = sizes[myRank] - 1;
+    for (int i = 0; i < dimX; i++){
+      vectorEnvoieBot.push_back(heatReceive(i,j));
+    }
+    j = 0;
+    for (int i = 0; i < dimX; i++){
+      vectorEnvoieTop.push_back(heatReceive(i,j));
+    }
+    MPI_Status status;
+    if (myRank < nProc - 1){
+      MPI_Sendrecv(vectorEnvoieBot.data(), vectorEnvoieBot.size(),
+                  MPI_DOUBLE, myRank + 1, 0, vectorRecuTop.data(),
+                  vectorRecuTop.size(), MPI_DOUBLE, myRank - 1, 1,
+                  MPI_COMM_WORLD, &status);
+    }
+    if (myRank > 0 ){
+      MPI_Sendrecv(vectorEnvoieTop.data(), vectorEnvoieTop.size(),
+                  MPI_DOUBLE, myRank - 1, 1, vectorRecuBot.data(),
+                  vectorRecuBot.size(), MPI_DOUBLE, myRank + 1, 0,
+                  MPI_COMM_WORLD, &status);
+    }
+
+  }
+  */
   MPI_Finalize();
 
 }
+
+/*
+// ECHANGE VECTORS ENTRE PROC
+//for (int ite = 0; ite < maxT; )
+
+if (myRank == 0){
+  MPI_Send(vectorEnvoieBot.data(), dimX, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
+  MPI_Status status;
+  MPI_Recv(vectorRecuBot.data(), dimX, MPI_DOUBLE, 1, 2, MPI_COMM_WORLD, &status);
+}
+if (0 < myRank < nProc - 1){
+  MPI_Status status;
+  MPI_Recv(vectorRecuTop.data(), dimX, MPI_DOUBLE, myRank - 1, 1, MPI_COMM_WORLD, &status);
+  MPI_Send(vectorEnvoieTop.data(), dimX, MPI_DOUBLE, myRank - 1, 2, MPI_COMM_WORLD);
+  MPI_Send(vectorEnvoieBot.data(), dimX, MPI_DOUBLE, myRank + 1, 1, MPI_COMM_WORLD);
+  MPI_Recv(vectorRecuBot.data(), dimX, MPI_DOUBLE, myRank + 1, 2, MPI_COMM_WORLD, &status);
+}
+if (myRank == nProc - 1){
+  MPI_Status status;
+  MPI_Recv(vectorRecuTop.data(), dimX, MPI_DOUBLE, myRank - 1, 1, MPI_COMM_WORLD, &status);
+  MPI_Send(vectorEnvoieTop.data(), dimX, MPI_DOUBLE, myRank - 1, 2, MPI_COMM_WORLD);
+}
+*/
+
+
+/*
+if (myRank < nProc - 1){
+  printf("voici mon rank : %d || BOT -> ", myRank);
+  for (int i = 0; i < vectorEnvoieBot.size(); i++){
+    printf("%d - ", vectorEnvoieBot[i]);
+  }
+  printf("\n");
+}
+*/
 
 /*
 // print displacements and sizes
