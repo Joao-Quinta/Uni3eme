@@ -60,7 +60,9 @@ int main(int argc, char **argv) {
     if (displacements.size() == 0){
       displacements.push_back(0);
     } else{
+      printf(" diplacement last : %d || size last : %d \n", displacements.back(),sizes.back());;
       displacements.push_back(displacements.back() + sizes.back());
+      printf(" addition : %d\n", displacements.back());
     }
     sizes.push_back(nLinesProc);
     nLinesRestantes = nLinesRestantes - nLinesProc;
@@ -70,8 +72,8 @@ int main(int argc, char **argv) {
   }
   printf("size 0 : %d ||  displacement 0 : %d  \n", sizes[0], displacements[0]);
   }
-  printf("%d || %d || %d \n", sizes[0], sizes[1], sizes[2]);
-  printf("%d || %d || %d \n", displacements[0], displacements[1], displacements[2]);
+  printf("%d || %d || %d || %d \n", sizes[0], sizes[1], sizes[2], sizes[3]);
+  printf("%d || %d || %d || %d \n", displacements[0], displacements[1], displacements[2], displacements[3]);
 
 }
 
