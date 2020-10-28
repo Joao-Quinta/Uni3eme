@@ -67,9 +67,9 @@ int main(int argc, char **argv) {
   }
   Array2D<double> heatReceive(dimX, sizes[myRank], 1); // La matrice de la chaleur
   Array2D<double> tmpReceive(dimX, sizes[myRank], 0);  // Une matrice temporaire
-
-
   int tailleBufferRecu = dimX * sizes[myRank];
+
+
   if (myRank == 0){
     MPI_Scatterv(&heat(0,0), sizes.data(), displacements.data(),
                 MPI_DOUBLE, &heatReceive(0,0), tailleBufferRecu,
@@ -86,6 +86,16 @@ int main(int argc, char **argv) {
                 MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   }
+  /*
+  for (int i = displacements[myRank]; i < displacements[myRank] + sizes[myRank]; i++){
+    //printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
+    for (int j = 0; j < dimX; j++){
+      int z = i - displacements[myRank];
+      //printf("heatReceive : (%d , %d) = heat : (%d , %d)\n", j,z,j,i);
+      heatReceive(j,z) = heat(j,i);
+      tmpReceive(j,z) = heat(j,i);
+    }
+  }*/
 
   if (myRank == 0){
     for (int i = 0; i < dimY; i++){
@@ -101,19 +111,11 @@ int main(int argc, char **argv) {
       printf("%f ", heatReceive(j,i));
     }printf("\n" );
   }printf("\n" );
-  /*
-  for (int i = displacements[myRank]; i < displacements[myRank] + sizes[myRank]; i++){
-    //printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
-    for (int j = 0; j < dimX; j++){
-      int z = i - displacements[myRank];
-      //printf("heatReceive : (%d , %d) = heat : (%d , %d)\n", j,z,j,i);
-      heatReceive(j,z) = heat(j,i);
-    }
-  }*/
+
   std::vector<double> vectorEnvoieBot;
-  std::vector<double> vectorRecuBot;
+  std::vector<double> vectorRecuBot(dimX,0);
   std::vector<double> vectorEnvoieTop;
-  std::vector<double> vectorRecuTop;
+  std::vector<double> vectorRecuTop(dimX,0);
 
   for (int iter = 0; iter < maxT; iter ++){
     int j = sizes[myRank] - 1;
@@ -125,25 +127,35 @@ int main(int argc, char **argv) {
       vectorEnvoieTop.push_back(heatReceive(i,j));
     }
     MPI_Status status;
-    if (myRank < nProc - 1){
+    if (myRank == 0){
       MPI_Sendrecv(vectorEnvoieBot.data(), vectorEnvoieBot.size(),
                   MPI_DOUBLE, myRank + 1, 0, vectorRecuTop.data(),
-                  vectorRecuTop.size(), MPI_DOUBLE, myRank - 1, 1,
-                  MPI_COMM_WORLD, &status);
-    }
-    if (myRank > 0 ){
+                  vectorRecuTop.size(), MPI_DOUBLE, MPI_ANY_SOURCE,
+                  0, MPI_COMM_WORLD, &status);
+    } else if (myRank == nProc-1){
       MPI_Sendrecv(vectorEnvoieTop.data(), vectorEnvoieTop.size(),
-                  MPI_DOUBLE, myRank - 1, 1, vectorRecuBot.data(),
-                  vectorRecuBot.size(), MPI_DOUBLE, myRank + 1, 0,
-                  MPI_COMM_WORLD, &status);
+                  MPI_DOUBLE, myRank - 1, 0, vectorRecuBot.data(),
+                  vectorRecuBot.size(), MPI_DOUBLE, MPI_ANY_SOURCE,
+                  0, MPI_COMM_WORLD, &status);
+    } else {
+      MPI_Sendrecv(vectorEnvoieBot.data(), vectorEnvoieBot.size(),
+                  MPI_DOUBLE, myRank + 1, 0, vectorRecuTop.data(),
+                  vectorRecuTop.size(), MPI_DOUBLE, MPI_ANY_SOURCE,
+                  0, MPI_COMM_WORLD, &status);
+      MPI_Sendrecv(vectorEnvoieTop.data(), vectorEnvoieTop.size(),
+                  MPI_DOUBLE, myRank - 1, 0, vectorRecuBot.data(),
+                  vectorRecuBot.size(), MPI_DOUBLE, MPI_ANY_SOURCE,
+                  0, MPI_COMM_WORLD, &status);
+
     }
+
     if (myRank == 0){
       for (int iY = 1; iY < sizes[myRank]; iY++){
         for (int iX = 1; iX < dimX - 1; iX++){
           if(iY == sizes[myRank] - 1){
-            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + vectorRecuBot[iX]);
+            tmpReceive(iX,iY) = 0.25* (heatReceive(iX-1,iY) + heatReceive(iX+1,iY) + heatReceive(iX,iY-1) + vectorRecuBot[iX]);
           }else{
-            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + heat(iX,iY+1));
+            tmpReceive(iX,iY) = 0.25* (heatReceive(iX-1,iY) + heatReceive(iX+1,iY) + heatReceive(iX,iY-1) + heatReceive(iX,iY+1));
           }
         }
       }
@@ -152,11 +164,11 @@ int main(int argc, char **argv) {
       for (int iY = 0; iY < sizes[myRank]; iY++){
         for (int iX = 1; iX < dimX - 1; iX++){
           if(iY == sizes[myRank] - 1){
-            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + vectorRecuBot[iX]);
+            tmpReceive(iX,iY) = 0.25* (heatReceive(iX-1,iY) + heatReceive(iX+1,iY) + heatReceive(iX,iY-1) + vectorRecuBot[iX]);
           }else if(iY == 0){
-            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY+1) + vectorRecuTop[iX]);
+            tmpReceive(iX,iY) = 0.25* (heatReceive(iX-1,iY) + heatReceive(iX+1,iY) + heatReceive(iX,iY+1) + vectorRecuTop[iX]);
           }else{
-            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + heat(iX,iY+1));
+            tmpReceive(iX,iY) = 0.25* (heatReceive(iX-1,iY) + heatReceive(iX+1,iY) + heatReceive(iX,iY-1) + heatReceive(iX,iY+1));
           }
         }
       }
@@ -166,17 +178,23 @@ int main(int argc, char **argv) {
       for (int iY = 0; iY < sizes[myRank] - 1; iY++){
         for (int iX = 1; iX < dimX - 1; iX++){
           if(iY == 0){
-            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY+1) + vectorRecuTop[iX]);
+            tmpReceive(iX,iY) = 0.25* (heatReceive(iX-1,iY) + heatReceive(iX+1,iY) + heatReceive(iX,iY+1) + vectorRecuTop[iX]);
           }else{
-            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + heat(iX,iY+1));
+            tmpReceive(iX,iY) = 0.25* (heatReceive(iX-1,iY) + heatReceive(iX+1,iY) + heatReceive(iX,iY-1) + heatReceive(iX,iY+1));
           }
         }
       }
     }
     heat.unsafeSwap(tmp);
   }
+  printf("my rank is : %d\n", myRank);
+  for (int i = 0; i < sizes[myRank]; i++){
+    for(int j = 0; j < dimX; j++){
+      printf("%f ", heatReceive(j,i));
+    }printf("\n" );
+  }printf("\n" );
 
-  MPI_Gatherv(&heatReceive(0,0), tailleBufferRecu, MPI_DOUBLE, &heat(0,0),
+  MPI_Gatherv(&heatReceive, tailleBufferRecu, MPI_DOUBLE, &heat,
                 sizes.data(), displacements.data(), MPI_DOUBLE,
                 0, MPI_COMM_WORLD);
   if (myRank == 0){
