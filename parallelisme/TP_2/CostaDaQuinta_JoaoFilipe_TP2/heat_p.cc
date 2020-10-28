@@ -20,9 +20,9 @@ void save(Array2D<double> &matrix, std::string name) {
 
 int main(int argc, char **argv) {
 
-  const int dimX = 7;
-  const int dimY = 6;
-  const int maxT = 4000;
+  const int dimX = atoi(argv[1]);
+  const int dimY = atoi(argv[2]);
+  const int maxT = atoi(argv[3]);
 
   int myRank, nProc;
   std::vector<int> sizes;
@@ -173,6 +173,14 @@ int main(int argc, char **argv) {
         }
       }
     }
+    heat.unsafeSwap(tmp);
+  }
+
+  MPI_Gatherv(&heatReceive(0,0), tailleBufferRecu, MPI_DOUBLE, &heat(0,0),
+                sizes.data(), displacements.data(), MPI_DOUBLE,
+                0, MPI_COMM_WORLD);
+  if (myRank == 0){
+    save(heat, "chaleur.dat");
   }
 
   MPI_Finalize();

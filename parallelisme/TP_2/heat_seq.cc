@@ -47,5 +47,6 @@ int main() {
                                        // deux pointeurs, ca ne coute donc pas trop de temps)
   }
 
+
   save(heat, "chaleur.dat");
 }
