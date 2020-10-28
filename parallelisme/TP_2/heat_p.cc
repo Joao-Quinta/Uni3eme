@@ -65,15 +65,28 @@ int main(int argc, char **argv) {
       nLinesProc = ceil(nLinesRestantes/procSansL);
     }
   }
-  Array2D<double> heatReceive(dimX, sizes[myRank], 0); // La matrice de la chaleur
+  Array2D<double> heatReceive(dimX, sizes[myRank], 1); // La matrice de la chaleur
   Array2D<double> tmpReceive(dimX, sizes[myRank], 0);  // Une matrice temporaire
 
 
   int tailleBufferRecu = dimX * sizes[myRank];
+  if (myRank == 0){
+    MPI_Scatterv(&heat(0,0), sizes.data(), displacements.data(),
+                MPI_DOUBLE, &heatReceive(0,0), tailleBufferRecu,
+                MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(&tmp(0,0), sizes.data(), displacements.data(),
+                MPI_DOUBLE, &tmpReceive(0,0), tailleBufferRecu,
+                MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  }else{
+    MPI_Scatterv(NULL, NULL, NULL,
+                MPI_DOUBLE, &heatReceive(0,0), tailleBufferRecu,
+                MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(NULL, NULL, NULL,
+                MPI_DOUBLE, &heatReceive(0,0), tailleBufferRecu,
+                MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-  MPI_Scatterv(&heat(0,0), sizes.data(), displacements.data(),
-              MPI_DOUBLE, &heatReceive(0,0), tailleBufferRecu,
-              MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  }
+
 
   //std::cout << "I'm process " << myRank << " and there are "<< nProc << " procs" <<std::endl;
   if (myRank == 0){
@@ -90,10 +103,11 @@ int main(int argc, char **argv) {
       printf("%f ", heatReceive(j,i));
     }printf("\n" );
   }printf("\n" );
+  /*
   // printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
   // print elements recus par chaque
 
-/*
+
   for (int i = displacements[myRank]; i < displacements[myRank] + sizes[myRank]; i++){
     //printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
     for (int j = 0; j < dimX; j++){
@@ -102,11 +116,6 @@ int main(int argc, char **argv) {
       heatReceive(j,z) = heat(j,i);
     }
   }*/
-
-
-
-/*
-
   std::vector<double> vectorEnvoieBot;
   std::vector<double> vectorRecuBot;
   std::vector<double> vectorEnvoieTop;
@@ -134,9 +143,22 @@ int main(int argc, char **argv) {
                   vectorRecuBot.size(), MPI_DOUBLE, myRank + 1, 0,
                   MPI_COMM_WORLD, &status);
     }
+    if (myRank == 0){
+      for (int iY = 1; iY < sizes[myRank]; iY++){
+        for (int iX = 1; iX < dimX - 1; iX++){
+          if(iY == sizes[myRank] - 1){
+            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + vectorRecuBot[iX]);
+          }else{
+            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + heat(iX,iY+1));
+          }
+        }
+      }
+    }
+    if (0 < myRank < nProc - 1){}
+    if (myRank == nProc - 1){}
 
   }
-  */
+
   MPI_Finalize();
 
 }
