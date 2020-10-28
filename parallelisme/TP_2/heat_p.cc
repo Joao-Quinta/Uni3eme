@@ -87,8 +87,6 @@ int main(int argc, char **argv) {
 
   }
 
-
-  //std::cout << "I'm process " << myRank << " and there are "<< nProc << " procs" <<std::endl;
   if (myRank == 0){
     for (int i = 0; i < dimY; i++){
       for(int j = 0; j < dimX; j++){
@@ -104,10 +102,6 @@ int main(int argc, char **argv) {
     }printf("\n" );
   }printf("\n" );
   /*
-  // printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
-  // print elements recus par chaque
-
-
   for (int i = displacements[myRank]; i < displacements[myRank] + sizes[myRank]; i++){
     //printf("my rank is %d  and my displacements is %d \n", myRank, displacements[myRank]);
     for (int j = 0; j < dimX; j++){
@@ -154,13 +148,34 @@ int main(int argc, char **argv) {
         }
       }
     }
-    if (0 < myRank < nProc - 1){}
-    if (myRank == nProc - 1){}
+    if (0 < myRank < nProc - 1){
+      for (int iY = 0; iY < sizes[myRank]; iY++){
+        for (int iX = 1; iX < dimX - 1; iX++){
+          if(iY == sizes[myRank] - 1){
+            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + vectorRecuBot[iX]);
+          }else if(iY == 0){
+            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY+1) + vectorRecuTop[iX]);
+          }else{
+            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + heat(iX,iY+1));
+          }
+        }
+      }
 
+    }
+    if (myRank == nProc - 1){
+      for (int iY = 0; iY < sizes[myRank] - 1; iY++){
+        for (int iX = 1; iX < dimX - 1; iX++){
+          if(iY == 0){
+            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY+1) + vectorRecuTop[iX]);
+          }else{
+            tmp(iX,iY) = 0.25* (heat(iX-1,iY) + heat(iX+1,iY) + heat(iX,iY-1) + heat(iX,iY+1));
+          }
+        }
+      }
+    }
   }
 
   MPI_Finalize();
-
 }
 
 /*
@@ -183,30 +198,5 @@ if (myRank == nProc - 1){
   MPI_Status status;
   MPI_Recv(vectorRecuTop.data(), dimX, MPI_DOUBLE, myRank - 1, 1, MPI_COMM_WORLD, &status);
   MPI_Send(vectorEnvoieTop.data(), dimX, MPI_DOUBLE, myRank - 1, 2, MPI_COMM_WORLD);
-}
-*/
-
-
-/*
-if (myRank < nProc - 1){
-  printf("voici mon rank : %d || BOT -> ", myRank);
-  for (int i = 0; i < vectorEnvoieBot.size(); i++){
-    printf("%d - ", vectorEnvoieBot[i]);
-  }
-  printf("\n");
-}
-*/
-
-/*
-// print displacements and sizes
-if (myRank == 0){
-  for (int i = 0; i < displacements.size(); i++){
-    printf("%d - ", displacements[i]);
-  }
-  printf("\n");
-  for (int i = 0; i < displacements.size(); i++){
-    printf("%d - ", sizes[i]);
-  }
-  printf("\n");
 }
 */
