@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
         }
       }
     }
-    heat.unsafeSwap(tmp);
+    heatReceive.unsafeSwap(tmpReceive);
   }
   printf("my rank is : %d\n", myRank);
   for (int i = 0; i < sizes[myRank]; i++){
