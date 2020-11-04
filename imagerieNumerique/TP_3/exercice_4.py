@@ -5,8 +5,6 @@ exercice 4
 '''
 
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import copy
 import numpy as np
 import skimage.color as ski
 
@@ -44,3 +42,23 @@ plt.show()
 
 imageLena = plt.imread('lena.png')
 grayIm=ski.rgb2gray(imageLena)*256
+
+images = [grayIm]
+labels = ['8']
+for i in [7, 5, 3, 2, 1]:
+    quantization = 2 ** i
+    step = 256 / (quantization - 1)
+    quantizedImage = np.floor((grayIm / step) + 0.5)
+    images.append(quantizedImage)
+    labels.append(str(i))
+
+rows = 2
+cols = 3
+axes = []
+fig = plt.figure()
+for i in range(rows * cols):
+    axes.append(fig.add_subplot(rows, cols, i + 1))
+    plt.imshow(images[i], cmap='gray')
+    plt.title(labels[i] + '-bits')
+fig.tight_layout()
+plt.show()
