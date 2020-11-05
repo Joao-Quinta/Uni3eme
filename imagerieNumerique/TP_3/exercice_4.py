@@ -41,7 +41,7 @@ plt.show()
 # (b)
 
 imageLena = plt.imread('lena.png')
-grayIm=ski.rgb2gray(imageLena)*256
+grayIm = ski.rgb2gray(imageLena) * 256
 
 images = [grayIm]
 labels = ['8']
