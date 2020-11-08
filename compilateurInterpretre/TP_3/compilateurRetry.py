@@ -29,7 +29,7 @@ def supprimeNonTerParenthese(string):
         stringAvant = stringAvant.replace("G", "e")
         return stringAvant + stringApres
     else:
-        return string[0:index + 1] + supprimeNonTerParenthese(string[index+1:])
+        return string[0:index + 1] + supprimeNonTerParenthese(string[index + 1:])
 
 
 # utilise par developpeE pour faire tache (1)
@@ -83,7 +83,7 @@ def findParenthese(formule):
             return formule[i + 1:], formule[1:i]
         elif formule[i] == ")":
             count = count - 1
-    return None
+    return "", formule[1:len(formule)]
 
 
 def evaluation(formule):
@@ -105,9 +105,9 @@ def main(formule, arbreDerivation):
             arbreDerivation.append(replaceString(arbreDerivation[-1], "F", "(E)"))
             arbreDerivation = developpeE(arbreDerivation)
             formule, formuleParenthese = findParenthese(formule)
-            #print(arbreDerivation, " pre")
+            # print(arbreDerivation, " pre")
             arbreDerivation = main(formuleParenthese, arbreDerivation)
-            #print(arbreDerivation, " post")
+            # print(arbreDerivation, " post")
         else:
             arbreDerivation.append(replaceString(arbreDerivation[-1], "F", firstTerminal))
     arbreDerivation.append(supprimeNonTerParenthese(arbreDerivation[-1]))
