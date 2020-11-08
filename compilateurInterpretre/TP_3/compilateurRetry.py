@@ -11,17 +11,22 @@ import copy
 
 # string est une simple string, old est un symbole qu on veut enlever, new, le symbole qui remplavce old
 def replaceString(string, old, new):
-    string1 = ""
-    string2 = ""
-    for i in range(0, len(string)):
-        if string[i] == old:
-            string1 = string[0:i]
-            string2 = string[i + 1: len(string)]
-    return string1 + new + string2
+    index = string.find(old)
+    return string[0:index] + new + string[index + 1: len(string)]
 
 
 def supprimeEpsilon(string):
     return string.replace("e", "")
+
+
+def supprimeNonTerParenthese(string):
+    stringTer = ""
+    index = string.find(")")
+    while index > -1:
+        stringTer = stringTer + supprimeNonTer(string[0:index + 1])
+        string = string[index + 1:]
+        index = string.find(")")
+    return stringTer + string
 
 
 # utilise par developpeE pour faire tache (1)
@@ -65,8 +70,43 @@ def getFirstTerminal(formule):
         return formule[len(formule):len(formule)], formule
 
 
+# 2+22+(2+2)+2
+def findParenthese(formule):
+    count = 0
+    for i in range(0, len(formule)):
+        if formule[i] == "(":
+            count = count + 1
+        elif formule[i] == ")" and count == 1:
+            return formule[i + 1:], formule[1:i]
+        elif formule[i] == ")":
+            count = count - 1
+    return None
+
+
 def evaluation(formule):
     print(eval(formule))
+
+
+def main(formule, arbreDerivation):
+    if len(arbreDerivation) == 0:
+        arbreDerivation = developpeE(["E"])
+    while len(formule) > 0:
+        formule, firstTerminal = getFirstTerminal(formule)
+        if firstTerminal == "D":
+            arbreDerivation.append(replaceString(arbreDerivation[-1], "D", "+E"))
+            arbreDerivation = developpeE(arbreDerivation)
+        elif firstTerminal == "G":
+            arbreDerivation.append(replaceString(arbreDerivation[-1], "G", "*E"))
+            arbreDerivation = developpeE(arbreDerivation)
+        elif firstTerminal == "(":
+            arbreDerivation.append(replaceString(arbreDerivation[-1], "F", "(E)"))
+            arbreDerivation = developpeE(arbreDerivation)
+            formule, formuleParenthese = findParenthese(formule)
+            arbreDerivation = main(formuleParenthese, arbreDerivation)
+            arbreDerivation.append(supprimeNonTerParenthese(arbreDerivation[-1]))
+        else:
+            arbreDerivation.append(replaceString(arbreDerivation[-1], "F", firstTerminal))
+    return arbreDerivation
 
 
 with open("salut.txt", "r") as f:
@@ -76,19 +116,7 @@ with open("salut.txt", "r") as f:
             lignes[i] = lignes[i][:-1]
     for i in range(0, len(lignes)):
         print(lignes[i])
-        arbre = developpeE(["E"])
-        while len(lignes[i]) > 0:
-            lignes[i], firstTerminal = getFirstTerminal(lignes[i])
-            if firstTerminal == "D":
-                arbre.append(replaceString(arbre[-1], "D", "+E"))
-                arbre = developpeE(arbre)
-            elif firstTerminal == "G":
-                arbre.append(replaceString(arbre[-1], "G", "*E"))
-                arbre = developpeE(arbre)
-            elif firstTerminal == "(":
-                pass
-            else:
-                arbre.append(replaceString(arbre[-1], "F", firstTerminal))
+        arbre = main(lignes[i], [])
         arbre.append(supprimeNonTer(arbre[-1]))
         arbre.append(supprimeEpsilon(arbre[-1]))
         print(arbre)

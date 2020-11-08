@@ -10,13 +10,8 @@ import copy
 
 
 def replaceString(string, old, new):
-    string1 = ""
-    string2 = ""
-    for i in range(0, len(string)):
-        if string[i] == old:
-            string1 = string[0:i]
-            string2 = string[i + 1: len(string)]
-    return string1 + new + string2
+    index = string.find(old)
+    return string[0:index] + new + string[index + 1: len(string)]
 
 
 def enleveNonTer(arbreArg, symbol):
