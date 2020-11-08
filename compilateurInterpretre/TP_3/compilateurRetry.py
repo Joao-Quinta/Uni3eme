@@ -22,11 +22,14 @@ def supprimeEpsilon(string):
 def supprimeNonTerParenthese(string):
     stringTer = ""
     index = string.find(")")
-    while index > -1:
-        stringTer = stringTer + supprimeNonTer(string[0:index + 1])
-        string = string[index + 1:]
-        index = string.find(")")
-    return stringTer + string
+    if string[0:index].find("G") != -1 or string[0:index].find("G") != -1:
+        stringAvant = string[0:index]
+        stringApres = string[index:]
+        stringAvant = stringAvant.replace("D", "e")
+        stringAvant = stringAvant.replace("G", "e")
+        return stringAvant + stringApres
+    else:
+        return string[0:index + 1] + supprimeNonTerParenthese(string[index+1:])
 
 
 # utilise par developpeE pour faire tache (1)
@@ -102,10 +105,12 @@ def main(formule, arbreDerivation):
             arbreDerivation.append(replaceString(arbreDerivation[-1], "F", "(E)"))
             arbreDerivation = developpeE(arbreDerivation)
             formule, formuleParenthese = findParenthese(formule)
+            #print(arbreDerivation, " pre")
             arbreDerivation = main(formuleParenthese, arbreDerivation)
-            arbreDerivation.append(supprimeNonTerParenthese(arbreDerivation[-1]))
+            #print(arbreDerivation, " post")
         else:
             arbreDerivation.append(replaceString(arbreDerivation[-1], "F", firstTerminal))
+    arbreDerivation.append(supprimeNonTerParenthese(arbreDerivation[-1]))
     return arbreDerivation
 
 
