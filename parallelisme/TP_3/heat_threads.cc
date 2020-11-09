@@ -21,11 +21,15 @@ void save(Array2D<double> &matrix, std::string name) {
   }
 }
 
-void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id,Array2D<double> &heat,Array2D<double> &tmp){
+void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id,Array2D<double> heat,Array2D<double> tmp){
   for (int iT=0; iT<iterations; iT++) {
+    m.lock();
+    printf("SALUT ----- > %p\n", &heat(0,0));
     for (int yi=yStart; yi < (yStart + yNumberLines); yi++){
+      //printf("MY ID : %d - ligne : %d -- \n",id, yi );
       for (int xi=1; xi < (xMax - 1); xi++){
-        tmp(xi,yi) = 0.25*( heat(xi-1,yi) + heat(xi+1,yi) + heat(xi,yi-1) + heat(xi,yi+1));
+        tmp(xi,yi) = 0.25*(heat(xi-1,yi) + heat(xi+1,yi) + heat(xi,yi-1) + heat(xi,yi+1));
+        //printf("X: %d ---> %f -- %f -- %f -- %f  || ----> %f\n",xi,heat(xi-1,yi), heat(xi+1,yi), heat(xi,yi-1), heat(xi,yi+1),tmp(xi,yi));
       }
       /*
       m.lock();
@@ -33,8 +37,30 @@ void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id
       m.unlock();
       */
     }
+    m.unlock();
     barrier.wait();
-    if(id == 0)heat.unsafeSwap(tmp);
+
+    if(id == 0){
+      /*
+
+      printf("CHANGEMENT : \n" );
+      for (int yi=0; yi < 10; yi++){
+        for (int xi=0; xi < 10; xi++){
+          printf("- %f -",tmp(xi,yi));
+        }printf("\n");
+      }*/
+      heat.unsafeSwap(tmp);
+/*
+      printf("print it : %d \n", iT);
+      for (int yi=0; yi < 10; yi++){
+        for (int xi=0; xi < 10; xi++){
+          printf("- %f -",heat(xi,yi));
+        }printf("\n");
+      }
+      */
+    }
+
+    //heat.unsafeSwap(tmp);
     barrier.wait();
   }
 }
@@ -71,6 +97,13 @@ int main(int argc, char **argv) {
   int procSansL = nProc;
   int nLinesRestantes = dimY - 2;
 
+  printf("FIRST PRINT \n");
+  for (int yi=0; yi < 10; yi++){
+    for (int xi=0; xi < 10; xi++){
+      printf("- %f -",heat(xi,yi));
+    }printf("\n");
+  }printf("\n");
+
   int nLinesProc = ceil(nLinesRestantes/procSansL);
   while (nLinesRestantes > 0) {
     if (displacements.size() == 0){
@@ -90,6 +123,13 @@ int main(int argc, char **argv) {
   for(int i=1; i<nProc; i++)threads.push_back(std::thread(laplaceFunction,displacements[i], sizes[i], maxT, dimX, i, heat, tmp));
   laplaceFunction(displacements[0], sizes[0], maxT, dimX, 0,heat, tmp);
   for(int i=0; i < (nProc - 1); i++) threads[i].join();
+
+  printf("LAST PRINT \n");
+  for (int yi=0; yi < 10; yi++){
+    for (int xi=0; xi < 10; xi++){
+      printf("- %f -",heat(xi,yi));
+    }printf("\n");
+  }printf("\n");
 
 }
 
