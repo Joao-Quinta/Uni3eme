@@ -21,14 +21,14 @@ void save(Array2D<double> &matrix, std::string name) {
   }
 }
 
-void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id,Array2D<double> heat,Array2D<double> tmp){
+void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id,Array2D<double> &heat,Array2D<double> &tmp){
   for (int iT=0; iT<iterations; iT++) {
     m.lock();
-    printf("SALUT ----- > %p\n", &heat(0,0));
+    printf("SALUT id : %d ----- > %p\n",id, &heat(0,0));
     for (int yi=yStart; yi < (yStart + yNumberLines); yi++){
       //printf("MY ID : %d - ligne : %d -- \n",id, yi );
       for (int xi=1; xi < (xMax - 1); xi++){
-        tmp(xi,yi) = 0.25*(heat(xi-1,yi) + heat(xi+1,yi) + heat(xi,yi-1) + heat(xi,yi+1));
+        tmp.data(xi+yi) = 0.25*(heat.data((xi-1)+yi) + heat.data((xi+1)+yi) + heat.data(xi+(yi-1)) + heat.data(xi+(yi+1)));
         //printf("X: %d ---> %f -- %f -- %f -- %f  || ----> %f\n",xi,heat(xi-1,yi), heat(xi+1,yi), heat(xi,yi-1), heat(xi,yi+1),tmp(xi,yi));
       }
       /*
@@ -42,15 +42,15 @@ void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id
 
     if(id == 0){
       /*
-
       printf("CHANGEMENT : \n" );
       for (int yi=0; yi < 10; yi++){
         for (int xi=0; xi < 10; xi++){
           printf("- %f -",tmp(xi,yi));
         }printf("\n");
-      }*/
+      }
+      */
       heat.unsafeSwap(tmp);
-/*
+      /*
       printf("print it : %d \n", iT);
       for (int yi=0; yi < 10; yi++){
         for (int xi=0; xi < 10; xi++){
@@ -59,7 +59,6 @@ void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id
       }
       */
     }
-
     //heat.unsafeSwap(tmp);
     barrier.wait();
   }
@@ -96,6 +95,7 @@ int main(int argc, char **argv) {
 
   int procSansL = nProc;
   int nLinesRestantes = dimY - 2;
+  printf("SALUT MAIN ----- > %p\n", &heat(0,0));
 
   printf("FIRST PRINT \n");
   for (int yi=0; yi < 10; yi++){
