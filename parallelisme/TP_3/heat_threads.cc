@@ -21,14 +21,14 @@ void save(Array2D<double> &matrix, std::string name) {
   }
 }
 
-void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id,Array2D<double> &heat,Array2D<double> &tmp){
+void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id,Array2D<double> heat,Array2D<double> tmp){
   for (int iT=0; iT<iterations; iT++) {
     m.lock();
     printf("SALUT id : %d ----- > %p\n",id, &heat(0,0));
     for (int yi=yStart; yi < (yStart + yNumberLines); yi++){
       //printf("MY ID : %d - ligne : %d -- \n",id, yi );
       for (int xi=1; xi < (xMax - 1); xi++){
-        tmp.data(xi+yi) = 0.25*(heat.data((xi-1)+yi) + heat.data((xi+1)+yi) + heat.data(xi+(yi-1)) + heat.data(xi+(yi+1)));
+        tmp(xi,yi) = 0.25*(heat(xi-1,yi) + heat(xi+1,yi) + heat(xi,yi-1) + heat(xi,yi+1));
         //printf("X: %d ---> %f -- %f -- %f -- %f  || ----> %f\n",xi,heat(xi-1,yi), heat(xi+1,yi), heat(xi,yi-1), heat(xi,yi+1),tmp(xi,yi));
       }
       /*
