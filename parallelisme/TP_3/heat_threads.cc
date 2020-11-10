@@ -8,8 +8,11 @@
 #include "Array2D.hpp"
 #include "Barrier.hpp"
 
+
 std::mutex m;
 Barrier barrier;
+Array2D<double> heat(1,1,0);
+Array2D<double> tmp(1,1,0);
 
 // Sauvegarde d'une matrice dans un fichier texte
 void save(Array2D<double> &matrix, std::string name) {
@@ -21,7 +24,7 @@ void save(Array2D<double> &matrix, std::string name) {
   }
 }
 
-void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id,Array2D<double> heat,Array2D<double> tmp){
+void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id){
   for (int iT=0; iT<iterations; iT++) {
     m.lock();
     printf("SALUT id : %d ----- > %p\n",id, &heat(0,0));
@@ -64,18 +67,16 @@ void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id
   }
 }
 
-int main(int argc, char **argv) {
+int main(int argc,char **argv) {
 
   const int dimX = atoi(argv[1]);
   const int dimY = atoi(argv[2]);
   const int maxT = atoi(argv[3]);
   const int nProc = atoi(argv[4]);
 
+  heat.resize(dimX, dimY);
+  tmp.resize(dimX, dimY);
   barrier.init(nProc);
-
-  Array2D<double> heat(dimX, dimY, 0);
-  Array2D<double> tmp(dimX, dimY, 0);
-
 
   for (int iX=0; iX<dimX; iX++) {      // conditions aux bords:
       heat(iX,0) = 0;                 // 0 en haut
@@ -120,8 +121,8 @@ int main(int argc, char **argv) {
   }
 
   std::vector<std::thread> threads;
-  for(int i=1; i<nProc; i++)threads.push_back(std::thread(laplaceFunction,displacements[i], sizes[i], maxT, dimX, i, heat, tmp));
-  laplaceFunction(displacements[0], sizes[0], maxT, dimX, 0,heat, tmp);
+  for(int i=1; i<nProc; i++)threads.push_back(std::thread(laplaceFunction,displacements[i], sizes[i], maxT, dimX, i));
+  laplaceFunction(displacements[0], sizes[0], maxT, dimX, 0);
   for(int i=0; i < (nProc - 1); i++) threads[i].join();
 
   printf("LAST PRINT \n");
