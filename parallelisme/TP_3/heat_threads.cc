@@ -9,7 +9,6 @@
 #include "Barrier.hpp"
 
 
-std::mutex m;
 Barrier barrier;
 Array2D<double> heat(1,1,0);
 Array2D<double> tmp(1,1,0);
@@ -24,45 +23,19 @@ void save(Array2D<double> &matrix, std::string name) {
   }
 }
 
-void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax,int id){
+void laplaceFunction(int yStart,int yNumberLines,int iterations, int xMax, int id){
   for (int iT=0; iT<iterations; iT++) {
-    m.lock();
-    printf("SALUT id : %d ----- > %p\n",id, &heat(0,0));
     for (int yi=yStart; yi < (yStart + yNumberLines); yi++){
-      //printf("MY ID : %d - ligne : %d -- \n",id, yi );
       for (int xi=1; xi < (xMax - 1); xi++){
         tmp(xi,yi) = 0.25*(heat(xi-1,yi) + heat(xi+1,yi) + heat(xi,yi-1) + heat(xi,yi+1));
-        //printf("X: %d ---> %f -- %f -- %f -- %f  || ----> %f\n",xi,heat(xi-1,yi), heat(xi+1,yi), heat(xi,yi-1), heat(xi,yi+1),tmp(xi,yi));
       }
-      /*
-      m.lock();
-      std::cout << "hi, this is my 'id' : " << id <<" i am doing line : "<< yi<<" at iteration : "<< iT << std::endl;
-      m.unlock();
-      */
     }
-    m.unlock();
+    // double use ob barrier, 1st to make sure every thread computed their lines
     barrier.wait();
-
+    // the second so everyone correctly waits for the unsafeSwap
     if(id == 0){
-      /*
-      printf("CHANGEMENT : \n" );
-      for (int yi=0; yi < 10; yi++){
-        for (int xi=0; xi < 10; xi++){
-          printf("- %f -",tmp(xi,yi));
-        }printf("\n");
-      }
-      */
       heat.unsafeSwap(tmp);
-      /*
-      printf("print it : %d \n", iT);
-      for (int yi=0; yi < 10; yi++){
-        for (int xi=0; xi < 10; xi++){
-          printf("- %f -",heat(xi,yi));
-        }printf("\n");
-      }
-      */
     }
-    //heat.unsafeSwap(tmp);
     barrier.wait();
   }
 }
@@ -78,6 +51,7 @@ int main(int argc,char **argv) {
   tmp.resize(dimX, dimY);
   barrier.init(nProc);
 
+  // we initialize the matrices values
   for (int iX=0; iX<dimX; iX++) {      // conditions aux bords:
       heat(iX,0) = 0;                 // 0 en haut
       heat(iX,dimY-1) = 1;            // 1 en bas
@@ -91,19 +65,12 @@ int main(int argc,char **argv) {
       tmp(dimX-1,iY) = 1.;            // 1 a droite
   }
 
+  // sizes and displacements will hold the amount of lines for eche thread as well as the first line index
   std::vector<int> sizes;
   std::vector<int> displacements;
 
   int procSansL = nProc;
   int nLinesRestantes = dimY - 2;
-  printf("SALUT MAIN ----- > %p\n", &heat(0,0));
-
-  printf("FIRST PRINT \n");
-  for (int yi=0; yi < 10; yi++){
-    for (int xi=0; xi < 10; xi++){
-      printf("- %f -",heat(xi,yi));
-    }printf("\n");
-  }printf("\n");
 
   int nLinesProc = ceil(nLinesRestantes/procSansL);
   while (nLinesRestantes > 0) {
@@ -120,30 +87,11 @@ int main(int argc,char **argv) {
     }
   }
 
+  // we creat the threads that get as arguments their starting line and how many lines they compute
   std::vector<std::thread> threads;
   for(int i=1; i<nProc; i++)threads.push_back(std::thread(laplaceFunction,displacements[i], sizes[i], maxT, dimX, i));
   laplaceFunction(displacements[0], sizes[0], maxT, dimX, 0);
-  for(int i=0; i < (nProc - 1); i++) threads[i].join();
+  for(int i=0; i < (nProc - 1); i++) threads[i].join(); // we join() the threads and save the matrix
 
-  printf("LAST PRINT \n");
-  for (int yi=0; yi < 10; yi++){
-    for (int xi=0; xi < 10; xi++){
-      printf("- %f -",heat(xi,yi));
-    }printf("\n");
-  }printf("\n");
-
-}
-
-/*
-  for (int iT=0; iT<maxT; iT++) {      // boucle principale : on fait maxT iterations
-    for (int iY=1; iY<dimY-1; iY++) {  // on itere a l'interieur du domaine
-      for (int iX=1; iX<dimX-1; iX++) {
-        tmp(iX,iY) = 0.25*( heat(iX-1,iY) + heat(iX+1,iY)+
-                            heat(iX,iY-1) + heat(iX,iY+1) );
-      }
-    }
-    heat.unsafeSwap(tmp);              // Les deux matrices sont interverties (ceci ne fait que copier
-                                       // deux pointeurs, ca ne coute donc pas trop de temps)
-  }
   save(heat, "chaleur.dat");
-*/
+}

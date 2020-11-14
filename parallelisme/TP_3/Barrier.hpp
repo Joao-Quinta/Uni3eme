@@ -37,7 +37,6 @@ public:
     if(waiting == threshold){
       generation++;
       waiting = 0;
-      std::cout << "\nSENDING SIGNAL \n" << std::endl;
 
       cv.notify_all();
     }
