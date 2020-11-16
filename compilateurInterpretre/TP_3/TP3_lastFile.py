@@ -142,8 +142,8 @@ def checkIfValidExpression(expression):
             compteurParenthese += 1
             index += 1
         # pour éviter l'erreur "++" ou "**"
-        elif (ord(expression[index]) in [42, 43]) :
-            if index+1 < len(expression):
+        elif (ord(expression[index]) in [42, 43]):
+            if index + 1 < len(expression):
                 if (ord(expression[index + 1])) == (ord(expression[index])):
                     isThereAnErrorInExpression = True
             index += 1
@@ -187,18 +187,31 @@ def supprimeNonTer(string):
 # recoit tout l arbre, commence par "chasser" le premier E :
 # (1) suprime les non remineaux avant le E
 # (2)transforme le E en TD et finalement le T en FG
-def developpeE(arbreEntier):
-    for i in range(0, len(arbreEntier[-1])):
-        if arbreEntier[-1][i] == "E":
-            preE = supprimeNonTer(arbreEntier[-1][0:i])
-            if preE != '':
-                arbreEntier.append(preE + arbreEntier[-1][i:len(arbreEntier[-1])])
-                if arbreEntier[-1] == arbreEntier[-2]:
-                    arbreEntier.pop()
-            arbreEntier.append(arbreEntier[-1][0:i] + "TD" + arbreEntier[-1][i + 1:len(arbreEntier[-1])])
-            arbreEntier.append(arbreEntier[-1][0:i] + "FG" + arbreEntier[-1][i + 1:len(arbreEntier[-1])])
-            return arbreEntier
-    return arbreEntier
+def developpeE(arbreEntier,what):
+    if what == "E":
+        for i in range(0, len(arbreEntier[-1])):
+            if arbreEntier[-1][i] == "E":
+                preE = supprimeNonTer(arbreEntier[-1][0:i])
+                if preE != '':
+                    arbreEntier.append(preE + arbreEntier[-1][i:len(arbreEntier[-1])])
+                    if arbreEntier[-1] == arbreEntier[-2]:
+                        arbreEntier.pop()
+                arbreEntier.append(arbreEntier[-1][0:i] + "TD" + arbreEntier[-1][i + 1:len(arbreEntier[-1])])
+                arbreEntier.append(arbreEntier[-1][0:i] + "FG" + arbreEntier[-1][i + 1:len(arbreEntier[-1])])
+                return arbreEntier
+        return arbreEntier
+    else:
+        for i in range(0, len(arbreEntier[-1])):
+            if arbreEntier[-1][i] == "T":
+                preE = supprimeNonTer(arbreEntier[-1][0:i])
+                if preE != '':
+                    arbreEntier.append(preE + arbreEntier[-1][i:len(arbreEntier[-1])])
+                    if arbreEntier[-1] == arbreEntier[-2]:
+                        arbreEntier.pop()
+                arbreEntier.append(arbreEntier[-1][0:i] + "FG" + arbreEntier[-1][i + 1:len(arbreEntier[-1])])
+                return arbreEntier
+        return arbreEntier
+
 
 
 # (1) retourne le reste de la fomrule apres le premier non terminal (2) retourne aussi "D" pour dire que c est une
@@ -231,18 +244,19 @@ def findParenthese(formule):
 
 
 def evaluation(formule, dico):
-    #print("dico", dico)
-    #print(formule)
-    #print(dico)
+    # print("dico", dico)
+    # print(formule)
+    # print(dico)
     if len(dico) != 0:
         for value in dico:
             formule = formule.replace(value, dico.get(value))
         result = eval(formule)
     else:
         result = eval(formule)
-    #print(formule)
+    # print(formule)
     print("EVALUATION : ", result)
     print("")
+
 
 def test(expression, compteurHashtag, listeIndexHashtag, listeIndexEspace, arbre):
     index1 = 0
@@ -268,18 +282,18 @@ def main(formule, arbreDerivation):
         formule)
 
     if len(arbreDerivation) == 0:
-        arbreDerivation = developpeE(["E"])
+        arbreDerivation = developpeE(["E"],"E")
     while len(formule) > 0:
         formule, firstTerminal = getFirstTerminal(formule)
         if firstTerminal == "D":
             arbreDerivation.append(replaceString(arbreDerivation[-1], "D", "+E"))
-            arbreDerivation = developpeE(arbreDerivation)
+            arbreDerivation = developpeE(arbreDerivation,"E")
         elif firstTerminal == "G":
-            arbreDerivation.append(replaceString(arbreDerivation[-1], "G", "*E"))
-            arbreDerivation = developpeE(arbreDerivation)
+            arbreDerivation.append(replaceString(arbreDerivation[-1], "G", "*T"))
+            arbreDerivation = developpeE(arbreDerivation,"T")
         elif firstTerminal == "(":
             arbreDerivation.append(replaceString(arbreDerivation[-1], "F", "(E)"))
-            arbreDerivation = developpeE(arbreDerivation)
+            arbreDerivation = developpeE(arbreDerivation,"E")
             formule, formuleParenthese = findParenthese(formule)
             arbreDerivation = main(formuleParenthese, arbreDerivation)
         else:
@@ -290,7 +304,7 @@ def main(formule, arbreDerivation):
 
 with open("salut.txt", "r") as f:
     lignes = f.readlines()
-    #print("lignes", lignes)
+    # print("lignes", lignes)
     for i in range(0, len(lignes)):
         if lignes[i][-1] == "\n":
             lignes[i] = lignes[i][:-1]
@@ -299,7 +313,7 @@ with open("salut.txt", "r") as f:
         print(lignes[i])
         compteurHashtag, compteurParenthese, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression = checkIfValidExpression(
             lignes[i])
-        if (not isThereAnErrorInExpression) and (compteurParenthese %2 == 0):
+        if (not isThereAnErrorInExpression) and (compteurParenthese % 2 == 0):
             arbre = []
             dictVariable = dict()
             if compteurHashtag != 0:
