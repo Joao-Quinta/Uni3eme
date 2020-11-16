@@ -16,6 +16,7 @@ def checkIfValidExpression(expression):
     listeIndexEgal = []
     listeIndexEspace = []
     compteurHashtag = 0
+    compteurParenthese = 0
     index = 0
     listeIndexOperateur = []
     debutFinString = [34, 39, 44, 96, 8216, 8217]  # " ' ‘
@@ -127,7 +128,7 @@ def checkIfValidExpression(expression):
                 isThereAnErrorInExpression = True
 
             index = copy.deepcopy(index_copy)
-
+        # pour compter le nombre de variables (#)
         elif ord(expression[index]) == 35:
             compteurHashtag += 1
             listeIndexHashtag.append(index)
@@ -135,13 +136,21 @@ def checkIfValidExpression(expression):
         # pour =
         elif ord(expression[index]) == 61:
             listeIndexEgal.append(index)
-
             index += 1
-
+        # pour "(" et ")"
+        elif (ord(expression[index]) in [40, 41]) and (len(listeIndexEspace) > 0):
+            compteurParenthese += 1
+            index += 1
+        # pour éviter l'erreur "++" ou "**"
+        elif (ord(expression[index]) in [42, 43]) :
+            if index+1 < len(expression):
+                if (ord(expression[index + 1])) == (ord(expression[index])):
+                    isThereAnErrorInExpression = True
+            index += 1
         else:
             # print(expression[index], " est un symbole réservé")
             index += 1
-    return compteurHashtag, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression
+    return compteurHashtag, compteurParenthese, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression
 
 
 # string est une simple string, old est un symbole qu on veut enlever, new, le symbole qui remplavce old
@@ -222,13 +231,18 @@ def findParenthese(formule):
 
 
 def evaluation(formule, dico):
-    dico = dico[0]
-    print(formule)
-    print(dico)
-    for value in dico:
-        formule = formule.replace(value, dico.get(value))
-    print(formule)
-    print("EVALUATION : ", eval(formule))
+    #print("dico", dico)
+    #print(formule)
+    #print(dico)
+    if len(dico) != 0:
+        for value in dico:
+            formule = formule.replace(value, dico.get(value))
+        result = eval(formule)
+    else:
+        result = eval(formule)
+    #print(formule)
+    print("EVALUATION : ", result)
+    print("")
 
 def test(expression, compteurHashtag, listeIndexHashtag, listeIndexEspace, arbre):
     index1 = 0
@@ -250,7 +264,7 @@ def test(expression, compteurHashtag, listeIndexHashtag, listeIndexEspace, arbre
 
 
 def main(formule, arbreDerivation):
-    compteurHashtag, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression = checkIfValidExpression(
+    compteurHashtag, compteurParenthese, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression = checkIfValidExpression(
         formule)
 
     if len(arbreDerivation) == 0:
@@ -276,53 +290,57 @@ def main(formule, arbreDerivation):
 
 with open("salut.txt", "r") as f:
     lignes = f.readlines()
-    print("lignes", lignes)
+    #print("lignes", lignes)
     for i in range(0, len(lignes)):
         if lignes[i][-1] == "\n":
             lignes[i] = lignes[i][:-1]
     listeDeDictVariable = []
     for i in range(0, len(lignes)):
         print(lignes[i])
-        compteurHashtag, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression = checkIfValidExpression(
+        compteurHashtag, compteurParenthese, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression = checkIfValidExpression(
             lignes[i])
-        arbre = []
-        if compteurHashtag != 0:
-
-            arbre.append('PROG')
-            arbre.append('LISTVAR FORM')
-            arbre.append('DECLVAR LISTVAR FORM')
-            arbre = test(lignes[i], compteurHashtag, listeIndexHashtag, listeIndexEspace, arbre)
-
+        if (not isThereAnErrorInExpression) and (compteurParenthese %2 == 0):
+            arbre = []
             dictVariable = dict()
-            index = 0
-            # récupère les variables dans un dictionnaire
-            for hashtag in range(compteurHashtag):
-                dictVariable[str(lignes[i][listeIndexHashtag[index] + 1:listeIndexEgal[index]])] = lignes[i][
-                                                                                                   listeIndexEgal[
-                                                                                                       index] + 1:
-                                                                                                   listeIndexEspace[
-                                                                                                       index]]
-                index += 1
-            listeDeDictVariable.append(dictVariable)
-        else:
-            arbre.append('PROG')
-            arbre.append('LISTVAR FORM')
-            if 'LISTVAR' in arbre[-1]:
-                arbre.append(arbre[-1].replace("LISTVAR", "e"))
-            if 'FORM' in arbre[-1]:
-                arbre.append(arbre[-1].replace("FORM", "E"))
-        if compteurHashtag != 0:
-            expression = lignes[i][listeIndexEspace[-1] + 1:len(lignes[i])]
-        else:
-            expression = lignes[i]
-        beforeFORM = arbre[-1][0:len(arbre[-1]) - 1]
-        indexBeforeFORM = len(arbre)
-        x = main(expression, [])
-        arbre.pop()
-        for i in range(len(x)):
-            arbre.append(beforeFORM + x[i])
-        arbre.append(supprimeNonTer(arbre[-1]))
-        arbre.append(supprimeEpsilon(arbre[-1]))
-        print(arbre)
+            if compteurHashtag != 0:
 
-        evaluation(expression, listeDeDictVariable)
+                arbre.append('PROG')
+                arbre.append('LISTVAR FORM')
+                arbre.append('DECLVAR LISTVAR FORM')
+                arbre = test(lignes[i], compteurHashtag, listeIndexHashtag, listeIndexEspace, arbre)
+
+                index = 0
+                # récupère les variables dans un dictionnaire
+                for hashtag in range(compteurHashtag):
+                    dictVariable[str(lignes[i][listeIndexHashtag[index] + 1:listeIndexEgal[index]])] = lignes[i][
+                                                                                                       listeIndexEgal[
+                                                                                                           index] + 1:
+                                                                                                       listeIndexEspace[
+                                                                                                           index]]
+                    index += 1
+                listeDeDictVariable.append(dictVariable)
+            else:
+                arbre.append('PROG')
+                arbre.append('LISTVAR FORM')
+                if 'LISTVAR' in arbre[-1]:
+                    arbre.append(arbre[-1].replace("LISTVAR", "e"))
+                if 'FORM' in arbre[-1]:
+                    arbre.append(arbre[-1].replace("FORM", "E"))
+            if compteurHashtag != 0:
+                expression = lignes[i][listeIndexEspace[-1] + 1:len(lignes[i])]
+            else:
+                expression = lignes[i]
+            beforeFORM = arbre[-1][0:len(arbre[-1]) - 1]
+            indexBeforeFORM = len(arbre)
+            x = main(expression, [])
+            arbre.pop()
+            for i in range(len(x)):
+                arbre.append(beforeFORM + x[i])
+            arbre.append(supprimeNonTer(arbre[-1]))
+            arbre.append(supprimeEpsilon(arbre[-1]))
+            print(arbre)
+            evaluation(expression, dictVariable)
+        else:
+            print("there is an error in :", lignes[i])
+            print("")
+            pass
