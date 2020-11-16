@@ -1,8 +1,8 @@
 '''
-Compilateurs et interprètes TP_2
+Compilateurs et interprètes TP_3
 Travail développé par:
-Joao Quinta
 Edin Sulejmani
+Joao Quinta
 '''
 
 import copy
