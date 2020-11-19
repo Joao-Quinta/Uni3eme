@@ -8,8 +8,6 @@ import lib
 
 image1 = lib.read_image_cv2('images/img_1.png', 1)
 image2 = lib.read_image_cv2('images/img_2.png', 1)
-print(image1.shape)
-print(image1[0, 0])
 
 image1_negative = lib.image_negative_one_channel(image1)
 image2_negative = lib.image_negative_one_channel(image2)

@@ -45,7 +45,6 @@ def gamma_correction(image, gamma):
 
 def image_negative_one_channel(image):
     image_negative = copy.deepcopy(image)
-    print(image.shape)
     for i in range(0, image_negative.shape[0] - 1):
         for j in range(0, image_negative.shape[1] - 1):
             pixel = image_negative[i, j]
@@ -117,4 +116,8 @@ def treshold(image, threshold):
 
 
 def pixel_wise_multiplication(image1, image2):
-    return np.multiply(image1, image2)
+    image_r = copy.deepcopy(image1)
+    for i in range(image1.shape[0]):
+        for j in range(image1.shape[1]):
+            image_r[i][j] = image1[i][j] * image2[i][j]
+    return image_r
