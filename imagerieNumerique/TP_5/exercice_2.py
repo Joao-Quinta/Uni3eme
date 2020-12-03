@@ -11,7 +11,7 @@ import lib
 # exo a
 
 
-image_1 = lib.read_image_ski_no_multiply('images/img_1.png', 'False')
+image_1 = lib.read_image_ski_no_multiply('images/img_1.png')
 
 # angles : 30 a gauche -> 30
 # 45 a droite -> -45
@@ -34,7 +34,7 @@ lib.affichage_rows_cols(row, col, images, labels, row * col, 'gray')
 
 # exo b
 
-image_lena = lib.read_image_ski_no_multiply('images/lena.png', 'False')
+image_lena = lib.read_image_ski_no_multiply('images/lena.png')
 
 # angles : 30 a gauche -> 30
 # 45 a droite -> -45
@@ -42,7 +42,6 @@ image_lena = lib.read_image_ski_no_multiply('images/lena.png', 'False')
 images = [image_lena]
 labels = ["original lena"]
 
-rotation = [30, -45]
 
 for angle in rotation:
     images.append(lib.rotation_image(image_lena, angle))

@@ -13,12 +13,12 @@ def read_image_cv2(path, flag):
     return cv2.imread(path, flags=flag)
 
 
-def read_image_ski_no_multiply(path, flag):
-    return skio.imread(path, as_gray=flag)
+def read_image_ski_no_multiply(path):
+    return skio.imread(path)
 
 
-def read_image_ski_gris(path):
-    return (skio.imread(path, as_gray=False) * 255).astype("uint8")
+def read_image_ski_multiply(path, flag):
+    return (skio.imread(path, as_gray=flag) * 255).astype("uint8")
 
 
 def affine_transformation(A, val, b):
@@ -33,6 +33,11 @@ def affine_transformation(A, val, b):
 
 def rotation_image(image, rota):
     return transfo.rotate(image, rota)
+
+
+def projective_transformation(image, transformation):
+    transformed = transfo.ProjectiveTransform(transformation)
+    return transfo.warp(image, transformed)
 
 
 def affichage_rows_cols(rows, cols, images, labels, lastImage, cmap):
