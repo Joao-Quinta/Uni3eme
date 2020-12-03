@@ -24,7 +24,7 @@ for i in range(len(trans)):
     label = "transformation T"+str(i+1)
     labels.append(label)
 
-lib.affiche_rectangles(rectangles,labels)
+lib.affiche_rectangles_plot(rectangles, labels)
 
 
 
