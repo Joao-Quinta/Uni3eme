@@ -7,6 +7,8 @@ import numpy as np
 import cv2
 import copy
 import skimage.color as color
+import skimage.metrics as metric
+import math
 
 
 def read_image_cv2(path, flag):
@@ -90,6 +92,46 @@ def triangle_bend(triangle, value, bend_type):
 def projective_transformation(image, transformation):
     transformed = transfo.ProjectiveTransform(transformation)
     return transfo.warp(image, transformed)
+
+
+def downscale(image):
+    liste_garder = [x for x in range(len(image)) if x % 3 == 0]
+    image_down = [[pix for index, pix in enumerate(image[row]) if index in liste_garder] for row in liste_garder]
+    return np.array(image_down)
+
+
+def upscale_linear(image):
+    return image.repeat(3, axis=0).repeat(3, axis=1)
+
+
+def resize_openCV(image, what, val, flag):
+    dim = (int(image.shape[1] * val / 100), int(image.shape[0] * val / 100))
+    if what == "up":
+        dim = (int(image.shape[1] * val / 100), int(image.shape[0] * val / 100))
+    return cv2.resize(image, dim, interpolation=flag)
+
+
+def bilinear_resize(image, height, width):
+    img_height, img_width = image.shape[:2]
+    resized = np.empty([height, width])
+    x_ratio = float(img_width - 1) / (width - 1) if width > 1 else 0
+    y_ratio = float(img_height - 1) / (height - 1) if height > 1 else 0
+    for i in range(height):
+        for j in range(width):
+            x_l, y_l = math.floor(x_ratio * j), math.floor(y_ratio * i)
+            x_h, y_h = math.ceil(x_ratio * j), math.ceil(y_ratio * i)
+            x_weight = (x_ratio * j) - x_l
+            y_weight = (y_ratio * i) - y_l
+            a = image[y_l, x_l]
+            b = image[y_l, x_h]
+            c = image[y_h, x_l]
+            d = image[y_h, x_h]
+            pixel = a * (1 - x_weight) * (1 - y_weight) \
+                    + b * x_weight * (1 - y_weight) + \
+                    c * y_weight * (1 - x_weight) + \
+                    d * x_weight * y_weight
+            resized[i][j] = pixel
+    return resized
 
 
 def affichage_rows_cols(rows, cols, images, labels, lastImage, cmap):
