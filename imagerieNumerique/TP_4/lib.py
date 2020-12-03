@@ -21,12 +21,12 @@ def read_image_cv2(path, flag):
     return cv2.imread(path, flags=flag)
 
 
-def read_image_ski_1(path, asgray):
-    return skio.imread(path, as_gray=asgray)
+def read_image_ski_color(path):
+    return skio.imread(path, as_gray=True)
 
 
-def read_image_ski(path, asgray):
-    return (skio.imread(path, as_gray=asgray) * 255).astype("uint8")
+def read_image_ski_gris(path):
+    return (skio.imread(path, as_gray=False) * 255).astype("uint8")
 
 
 def equalize_hist_ski(image):

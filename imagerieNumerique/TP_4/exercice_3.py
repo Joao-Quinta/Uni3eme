@@ -81,9 +81,9 @@ lib.affichage_rows_cols(3, 3, images, labels, 3, 'gray')
 
 image9_stretch_rescale_intensity_percentile = lib.rescale_intensity_percentile_ski(image9, 5, 95)
 
-# images = [image9, image9_stretch_rescale_intensity, image9_stretch_rescale_intensity_percentile]
-# labels = ["original image 9", "stretched image 9", "image9 stretch rescale intensity percentile"]
-# lib.affichage_rows_cols(1, 3, images, labels, 3, 'gray')
+images = [image9, image9_stretch_rescale_intensity, image9_stretch_rescale_intensity_percentile]
+labels = ["original image 9", "stretched image 9", "image9 stretch rescale intensity percentile"]
+lib.affichage_rows_cols(1, 3, images, labels, 3, 'gray')
 
 image9_stretch_rescale_intensity_percentile_red, image9_stretch_rescale_intensity_percentile_green, image9_stretch_rescale_intensity_percentile_blue = lib.split_one_to_three(
     image9_stretch_rescale_intensity_percentile)
