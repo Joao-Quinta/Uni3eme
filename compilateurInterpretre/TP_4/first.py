@@ -2,6 +2,7 @@ import copy
 import re
 import math
 
+
 def checkIfValidExpression(expression):
     # liste_input = list(input())
     # print(liste_input)
@@ -299,7 +300,7 @@ def evaluation_small(command, dico):
             else:
                 valeur = var
             real_command = real_command + valeur + command[i]
-            command = command[i+1:]
+            command = command[i + 1:]
             i = 0
         else:
             i = i + 1
@@ -313,7 +314,7 @@ def evaluation_small(command, dico):
 
 def execute_instructions(instructions, dico):
     for instr in instructions:
-        #print(instr)
+        # print(instr)
         if instr[0] == "print":
             if instr[1] == "vide":
                 print()
@@ -324,10 +325,22 @@ def execute_instructions(instructions, dico):
             if "inv(" in instr[1]:
                 real_ = instr[1].replace("inv(", "")
                 real_ = real_.replace(")", "")
-                value = 1/evaluation_small(real_, dico)
+                value = 1 / evaluation_small(real_, dico)
             elif "racine" in instr[1]:
                 real_ = instr[1].replace("racine", "")
                 value = math.sqrt(evaluation_small(real_, dico))
+            elif "puissance" in instr[1]:
+                # "puissance(5|4)"
+                base = instr[1].split("|")
+                base, expo = base[0], base[1]
+                base = base.replace("puissance(", "")
+                expo = expo.replace(")", "")
+                base = evaluation_small(base, dico)
+                expo = evaluation_small(expo, dico)
+                res = 1
+                for i in range(int(expo)):
+                    res = res * base
+                value = res
             else:
                 value = evaluation_small(instr[1], dico)
             dico[instr[0]] = str(value)
@@ -337,13 +350,17 @@ def execute_instructions(instructions, dico):
 def evaluation(formule):
     stringSansEspace = arbre[-1].replace(" ", "")
     pre_boucle = stringSansEspace.split("{")
+    print(pre_boucle)
     dico, iterations = preBoucle(pre_boucle[0])
     pos = pre_boucle[1].split(";")
+
     pos = pos[:-1]
+    print(pos)
     instru_liste = transform_instructions(pos)
     print(dico)
     print(iterations)
     print(instru_liste)
+
     print()
     print("BOUCLE START")
     print()
