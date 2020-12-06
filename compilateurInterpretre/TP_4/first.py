@@ -315,7 +315,10 @@ def evaluation_small(command, dico):
 def execute_instructions(instructions, dico):
     for instr in instructions:
         # print(instr)
-        if instr[0] == "print":
+        if instr[0] == 'boucle':
+            for i in range(int(instr[1])):
+                dico = execute_instructions(instr[2], dico)
+        elif instr[0] == "print":
             if instr[1] == "vide":
                 print()
             else:
@@ -435,6 +438,13 @@ def replaceInstruction(arbre, instruction):
             arbre.extend(tp2(instruction[a.end() + 1:len(instruction) - 1], [arbre[-1]]))
             arbre.append(supprimeNonTer(arbre[-1]))
             arbre.append(supprimeEpsilon(arbre[-1]))
+        elif 'puissance' in instruction:
+            arbre.append(re.sub(r"\b%s\b" % "PD_AFF", "puissance(E)", arbre[-1]))
+            a = re.search(r'\b(puissance)\b', instruction)
+            ###################### on applique TP2 ici pour traduire E ###########################
+            arbre.extend(tp2(instruction[a.end() + 1:len(instruction) - 1], [arbre[-1]]))
+            arbre.append(supprimeNonTer(arbre[-1]))
+            arbre.append(supprimeEpsilon(arbre[-1]))
         else:
             arbre.append(re.sub(r"\b%s\b" % "PD_AFF", "E", arbre[-1]))
             ###################### on applique TP2 ici pour traduire E ###########################
@@ -459,6 +469,13 @@ def replaceInstruction(arbre, instruction):
     # si on a 'aff_ral' on est forcéement dans le cas afficher un retour à la ligne
     elif 'aff_ral' in instruction:
         arbre.append(re.sub(r"\b%s\b" % "INSTR", "aff_ral;", arbre[-1]))
+    elif 'puissance' in instruction:
+        arbre.append(re.sub(r"\b%s\b" % "INSTR", "puissance(E)", arbre[-1]))
+        a = re.search(r'\b(puissance)\b', instruction)
+        ###################### on applique TP2 ici pour traduire E ###########################
+        arbre.extend(tp2(instruction[a.end() + 1:len(instruction) - 1], [arbre[-1]]))
+        arbre.append(supprimeNonTer(arbre[-1]))
+        arbre.append(supprimeEpsilon(arbre[-1]))
 
     return arbre
 
@@ -479,7 +496,8 @@ with open("test.txt", "r") as f:
         compteurHashtag, compteurParenthese, listeIndexHashtag, listeIndexEgal, listeIndexEspace, isThereAnErrorInExpression = checkIfValidExpression(
             instruction)
         if isThereAnErrorInExpression:
-            pass
+            print("There is an error")
+            break
         # si on est dans une boucle on skip -> on remplace PAS  "LISTINSTR" par : "INSTR LISTINSTR" mais par ε
         if str(instruction) == "{" or str(instruction) == "}":
             if index == len(lignes) - 1:
@@ -500,8 +518,9 @@ with open("test.txt", "r") as f:
             arbre.append(re.sub(r"\b%s\b" % "LISTINSTR", "INSTR LISTINSTR", arbre[-1], 1))
     if 'ε' in arbre[-1]:
         arbre.append(re.sub(r"\b%s\b" % "ε", "", arbre[-1], 1))
-    print(arbre)
-    evaluation(arbre)
+    if not isThereAnErrorInExpression:
+        print(arbre)
+        evaluation(arbre)
 
     '''arbre = main(lignes[i], [])
     arbre.append(supprimeNonTer(arbre[-1]))
