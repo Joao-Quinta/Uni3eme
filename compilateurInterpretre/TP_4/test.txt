@@ -8,12 +8,9 @@ sPi = sPi + invI4;
 tmpPi = sPi * 90;
 tmpPi = racine tmpPi;
 tmpPi = racine tmpPi;
-afficher i;
-aff_ral;
-afficher pi + tmpPi * -1;
-aff_ral;
-afficher tmpPi;
-aff_ral;
-aff_ral;
+boucle 2
+{
+afficher i
+}
 i = i + 1;
 }

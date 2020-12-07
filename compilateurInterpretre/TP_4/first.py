@@ -275,18 +275,19 @@ def preBoucle(pre):
     return dico, int(values[-1].replace("boucle", ""))
 
 
-def transform_instructions(pos):
-    liste = []
-    for ele in pos:
-        liste.append(ele.split("="))
-    for i in range(len(liste)):
-        if len(liste[i]) == 1:
-            if "afficher" in liste[i][0]:
-                valueAfficher = liste[i][0].replace("afficher", "")
-            else:
-                valueAfficher = "vide"
-            liste[i] = ['print', valueAfficher]
-    return liste
+def transform_instructions(command):
+    # liste = []
+    # for ele in pos:
+    #     liste.append(ele.split("="))
+    # for i in range(len(liste)):
+    #     if len(liste[i]) == 1:
+    #         if "afficher" in liste[i][0]:
+    #             valueAfficher = liste[i][0].replace("afficher", "")
+    #         else:
+    #             valueAfficher = "vide"
+    #         liste[i] = ['print', valueAfficher]
+    # return liste
+    pass
 
 
 def evaluation_small(command, dico):
@@ -352,25 +353,27 @@ def execute_instructions(instructions, dico):
 
 def evaluation(formule):
     stringSansEspace = arbre[-1].replace(" ", "")
-    pre_boucle = stringSansEspace.split("{")
-    print(pre_boucle)
-    dico, iterations = preBoucle(pre_boucle[0])
-    pos = pre_boucle[1].split(";")
+    # pre_boucle = stringSansEspace.split("{")
+    # print(pre_boucle)
+    # dico, iterations = preBoucle(pre_boucle[0])
+    # pos = pre_boucle[1].split(";")
+    #
+    # pos = pos[:-1]
+    # print(pos)
+    # instru_liste = transform_instructions(pos)
+    # print(dico)
+    # print(iterations)
+    # print(instru_liste)
+    #
+    # print()
+    # print("BOUCLE START")
+    # print()
+    # for i in range(iterations - 1):
+    #     dico = execute_instructions(instru_liste, dico)
+    #
+    # print()
+    print(stringSansEspace)
 
-    pos = pos[:-1]
-    print(pos)
-    instru_liste = transform_instructions(pos)
-    print(dico)
-    print(iterations)
-    print(instru_liste)
-
-    print()
-    print("BOUCLE START")
-    print()
-    for i in range(iterations - 1):
-        dico = execute_instructions(instru_liste, dico)
-
-    print()
 
 
 def tp2(formule, arbreDerivation):
