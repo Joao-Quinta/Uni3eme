@@ -275,19 +275,33 @@ def preBoucle(pre):
     return dico, int(values[-1].replace("boucle", ""))
 
 
-def transform_instructions(command):
-    # liste = []
-    # for ele in pos:
-    #     liste.append(ele.split("="))
-    # for i in range(len(liste)):
-    #     if len(liste[i]) == 1:
-    #         if "afficher" in liste[i][0]:
-    #             valueAfficher = liste[i][0].replace("afficher", "")
-    #         else:
-    #             valueAfficher = "vide"
-    #         liste[i] = ['print', valueAfficher]
-    # return liste
-    pass
+def transform_instructions(gauche, reste):
+    if "boucle" in gauche:
+        iteration = gauche.replace("boucle", "")
+        resteBoucle = ""
+        acolade = 1
+        i = 0
+        while i < len(reste):
+            if reste[i] == "{":
+                acolade = acolade + 1
+            elif reste[i] == "}" and acolade > 1:
+                acolade = acolade - 1
+            elif reste[i] == "}" and acolade == 1:
+                resteBoucle = reste[0:i]
+                reste = reste[i+1:]
+            i = i + 1
+        instruction_boucle = evaluation(resteBoucle)
+        return ["boucle", iteration, instruction_boucle], reste
+    else:
+        gauche = gauche.split("=")
+        if len(gauche) == 1:
+            if "afficher" in gauche[0]:
+                valeur = gauche[0].replace("afficher", "")
+            else:
+                valeur = "vide"
+            return ['print', valeur], reste
+        else:
+            return [gauche[0], gauche[1]], reste
 
 
 def evaluation_small(command, dico):
@@ -315,8 +329,9 @@ def evaluation_small(command, dico):
 
 def execute_instructions(instructions, dico):
     for instr in instructions:
+        #print(instr, dico)
         # print(instr)
-        if instr[0] == 'boucle':
+        if len(instr) == 3:
             for i in range(int(instr[1])):
                 dico = execute_instructions(instr[2], dico)
         elif instr[0] == "print":
@@ -352,28 +367,19 @@ def execute_instructions(instructions, dico):
 
 
 def evaluation(formule):
-    stringSansEspace = arbre[-1].replace(" ", "")
-    # pre_boucle = stringSansEspace.split("{")
-    # print(pre_boucle)
-    # dico, iterations = preBoucle(pre_boucle[0])
-    # pos = pre_boucle[1].split(";")
-    #
-    # pos = pos[:-1]
-    # print(pos)
-    # instru_liste = transform_instructions(pos)
-    # print(dico)
-    # print(iterations)
-    # print(instru_liste)
-    #
-    # print()
-    # print("BOUCLE START")
-    # print()
-    # for i in range(iterations - 1):
-    #     dico = execute_instructions(instru_liste, dico)
-    #
-    # print()
+    stringSansEspace = formule.replace(" ", "")
+    instruction_liste = []
     print(stringSansEspace)
-
+    i = 0
+    while i < len(stringSansEspace):
+        if stringSansEspace[i] in ";{":
+            gauche = stringSansEspace[:i]
+            stringSansEspace = stringSansEspace[i + 1:]
+            i = -1
+            instructionB, stringSansEspace = transform_instructions(gauche, stringSansEspace)
+            instruction_liste.append(instructionB)
+        i = i + 1
+    return instruction_liste
 
 
 def tp2(formule, arbreDerivation):
@@ -523,7 +529,11 @@ with open("test.txt", "r") as f:
         arbre.append(re.sub(r"\b%s\b" % "ε", "", arbre[-1], 1))
     if not isThereAnErrorInExpression:
         print(arbre)
-        evaluation(arbre)
+        liste_instructions = evaluation(arbre[-1])
+        print(liste_instructions)
+        dico = {}
+        dico = execute_instructions(liste_instructions, dico)
+        print(dico)
 
     '''arbre = main(lignes[i], [])
     arbre.append(supprimeNonTer(arbre[-1]))
