@@ -1,10 +1,10 @@
 pi = 3.141592;
 sPi = 0;
-i= 1;
+i = 1;
 signe=-1;
 boucle 50
 {
-invI2 = inv (i*i);
+invI2 = inv(i*i);
 signe=signe*-1;
 frac=signe*invI2;
 sPi = sPi + frac;

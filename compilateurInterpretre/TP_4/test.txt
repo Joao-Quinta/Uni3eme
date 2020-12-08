@@ -16,10 +16,10 @@ afficher tmpPi;
 aff_ral;
 aff_ral;
 j = 0;
-boucle 6
+boucle 4
 {
 afficher j;
-j = j + 1:
+j = j + 1;
 }
 i = i + 1;
 }
