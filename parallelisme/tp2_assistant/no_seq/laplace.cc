@@ -39,6 +39,7 @@ inline void exchange(Array2D<double>& heat){
 }
 
 int main(int argc, char **argv) {
+  double startOerations_0 = MPI_Wtime();
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
@@ -69,6 +70,8 @@ int main(int argc, char **argv) {
             i = (i+1)%nProc;
         }
     }
+
+    double endOerations_0 = MPI_Wtime();
     MPI_Scatter(dimYlocs.data(), 1, MPI_INT, &dimYloc, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     int realSize = dimYloc*dimX;
@@ -137,10 +140,15 @@ int main(int argc, char **argv) {
     double startWrite = MPI_Wtime();
     if(myRank == 0) save(res, filename);
     double endWrite = MPI_Wtime();
+    // endWrite - startWrite = temps d ecriture
+    //endOerations_0 - startOerations_0 = temps de debut
+    double temps1 = endOerations_0 - startOerations_0;
+    double temps2 = endWrite - startWrite;
+    double tempsSeqP = temps1 + temps2;
 
     if(myRank==0){
-        std::cout << "computeTime, writeTime" << std::endl;
-        std::cout << computeTime << ", " << endWrite-startWrite << std::endl;
+        std::cout << "time not parallel" << std::endl;
+        std::cout << tempsSeqP<< std::endl;
         std::cout << "--------------------------------------------" << std::endl;
     }
 
