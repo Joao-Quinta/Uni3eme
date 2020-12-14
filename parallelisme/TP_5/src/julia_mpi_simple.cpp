@@ -58,7 +58,8 @@ int main(int argc, char** argv){
     int dimX = std::stoi(argv[8]);
     int dimY = std::stoi(argv[9]);
     Array2D<int>domain(dimX, dimY);
-    std::string filename(argv[10]);
+    int caNeFaitRien = std::stoi(argv[10]);
+    std::string filename(argv[11]);
 
     int myRank, nProc;
     MPI_Init(&argc, &argv);
