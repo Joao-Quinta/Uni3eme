@@ -24,9 +24,9 @@ std::complex<double> coord2cplx(const std::complex<double>& ll, const std::compl
 }
 
 // calcul l'ensemble de julia
-void julia(const std::complex<double>& ll, const std::complex<double>& ur, const std::complex<double>& c, int imax, Array2D<int>& d, int myRank){
+void julia(const std::complex<double>& ll, const std::complex<double>& ur, const std::complex<double>& c, int imax, Array2D<int>& d, int myRank, int split){
     for(int y=0; y<d.sizeY(); y++){
-      if (y%2 == myRank){
+      if (y%split == myRank){
         for(int x=0; x<d.sizeX(); x++){
             d(x, y) = divergence( coord2cplx(ll, ur, x, y, d), c, 2.0, imax );
         }
@@ -66,10 +66,9 @@ int main(int argc, char** argv){
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
     MPI_Comm_size(MPI_COMM_WORLD, &nProc);
-    nProc = 2;
 
     // repartition des donnees parmis les nProc
-    julia(lowerLeft, upperRight, c, imax, std::ref(domain), myRank);
+    julia(lowerLeft, upperRight, c, imax, std::ref(domain), myRank, nProc);
     std::cout << "task : "<<myRank << std::endl;
     //MPI_Gatherv(domainTask, dimX * dimYloc, MPI_INT,domain, dimYlocs.data(), startAt.data(), int, 0, MPI_COMM_WORLD);
     //writePgm(domain, imax, filename);

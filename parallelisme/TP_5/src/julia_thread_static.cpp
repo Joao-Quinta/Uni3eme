@@ -27,9 +27,9 @@ std::complex<double> coord2cplx(const std::complex<double>& ll, const std::compl
 }
 
 // calcul l'ensemble de julia -- julia(lowerLeft, upperRight, c, imax, 0);
-void julia(const std::complex<double>& ll, const std::complex<double>& ur, const std::complex<double>& c, int imax, int id){
+void julia(const std::complex<double>& ll, const std::complex<double>& ur, const std::complex<double>& c, int imax, int id, int split){
     for(int y=0; y<domain.sizeY(); y++){
-      if (y%2==id){
+      if (y%split==id){
         for(int x=0; x<domain.sizeX(); x++){
             domain(x,y) = divergence( coord2cplx(ll, ur, x, y), c, 2.0, imax );
         }
@@ -66,15 +66,14 @@ int main(int argc,char **argv) {
   int dimY = std::stoi(argv[9]);
   std::string filename(argv[10]);
   int nThreads = std::stoi(argv[11]);
-  nThreads = 2;
 
   domain.resize(dimX, dimY);
 
   // we creat the threads that get as arguments their starting line and how many lines they compute
   std::vector<std::thread> threads;
   // const std::complex<double>& ll, const std::complex<double>& ur, const std::complex<double>& c, int imax, int dimYTask,int startY
-  for(int i=1; i<nThreads; i++)threads.push_back(std::thread(julia, lowerLeft, upperRight, c, imax, 1));
-  julia(lowerLeft, upperRight, c, imax, 0);
+  for(int i=1; i<nThreads; i++)threads.push_back(std::thread(julia, lowerLeft, upperRight, c, imax, i, nThreads));
+  julia(lowerLeft, upperRight, c, imax, 0, nThreads);
   for(int i=0; i < (nThreads - 1); i++) threads[i].join(); // we join() the threads and save the matrix
 
   writePgm(imax, filename);
