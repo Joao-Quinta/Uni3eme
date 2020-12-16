@@ -62,8 +62,8 @@ int main(int argc,char **argv) {
   int imax = std::stoi(argv[7]);
   int dimX = std::stoi(argv[8]);
   int dimY = std::stoi(argv[9]);
-  int nThreads = std::stoi(argv[10]);
-  std::string filename(argv[11]);
+  std::string filename(argv[10]);
+  int nThreads = std::stoi(argv[11]);
 
   domain.resize(dimX, dimY);
 
