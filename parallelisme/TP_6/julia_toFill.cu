@@ -17,18 +17,29 @@ __device__ double norm(double2 a){
     return sqrt(a.x*a.x + a.y*a.y);
 }
 
-__...__ int divergence(double2 z0, double2 c, double bound, int imax){
-    ...
+__device__ int divergence(double2 z0, double2 c, double bound, int imax){
+    double2 z = make_double2(z0.x,z0.y);
+    for(int i = 0; i < imax; i++){
+      if(norm(z) > bound) return i;
+      z = cplxadd(cplxmult(z,z),c);
+    }
+    return imax;
 }
 
-__...__ double2 coord2cplx(double2 ll, double2 ur, int2 pos, int2 size){
-    return ...;
+__device__ double2 coord2cplx(double2 ll, double2 ur, int2 pos, int2 size){
+  double2 res = make_double2(ll.x + pos.x*(ur.x - ll.x)/size.x, -(ll.y + pos.y*(ur.y - ll.y)/size.y);
+    return res;
 }
 
 // Device code
-__...__ void julia(int* A, int2 size, double2 ll, double2 ur, double2 c, double bound, int imax )
+__global__ void julia(int* A, int2 size, double2 ll, double2 ur, double2 c, double bound, int imax )
 {
-    ...
+    for( int y = 0; y < size.y; y++){
+      for( int x = 0; x < size.x; x++){
+        int2 pos = make_int2(x,y);
+        A[pos.y*size.x+pos.x] = divergence(coord2cplx(ll, ur, pos, size), c, bound, imax);
+      }
+    }
 }
 
 void writePgm(Array2D<int>& d, int imax, std::string filename){
@@ -61,11 +72,11 @@ int main(int argc, char** argv)
 
     // Allocate vectors in device memory
     int* d_A;
-    cudaMalloc(...);
+    cudaMalloc(&d_A, size.x*size.y*sizeof(int));
 
     // Invoke kernel
-    dim3 dimBlock(...);
-    dim3 dimGrid(...);
+    dim3 dimBlock(16,16);
+    dim3 dimGrid((size.x + dimBlock.x - 1)/dimBlock.x, (size.y + dimBlock.y - 1)/dimBlock.y);
 
 
     auto start = std::chrono::steady_clock::now();
@@ -83,7 +94,7 @@ int main(int argc, char** argv)
 
     start = std::chrono::steady_clock::now();
 
-    cudaMemcpy(...);
+    cudaMemcpy(h_A.data(), d_A, size.x*size.y*sizeof(int), cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();
     end = std::chrono::steady_clock::now();
@@ -93,5 +104,5 @@ int main(int argc, char** argv)
     writePgm(h_A, imax, "julia.pgm");
 
     // Free device memory
-    cudaFree(...);
+    cudaFree(d_A);
 }
