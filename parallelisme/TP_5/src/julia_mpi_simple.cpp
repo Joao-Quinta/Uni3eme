@@ -95,9 +95,11 @@ int main(int argc, char** argv){
     // on scatter des donnes -> start dit aux tasks ou ils commencent, et dimYlocks le nb de lignes
     MPI_Scatter(dimYlocs.data(), 1, MPI_INT, &dimYloc, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Scatter(startAt.data(), 1, MPI_INT, &start, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    //std::cout << "task : "<<myRank << " - mon Y : "<< dimYloc<< std::endl;
 
-    julia(lowerLeft, upperRight, c, imax, std::ref(domain), dimYloc, start);
-    std::cout << "task : "<<myRank << std::endl;
+    Array2D<int>domainLocal(dimX, dimYloc);
+    julia(lowerLeft, upperRight, c, imax, std::ref(domainLocal), dimYloc, start);
+
     if (myRank == 0){
       for (int i = 0; i< dimYlocs.size(); i++){
         dimYlocs[i] = dimYlocs[i] * dimX;
