@@ -1,0 +1,21 @@
+pi = 3.141592;
+sPi = 0;
+i = 1;
+signe=-1;
+boucle 50
+{
+invI2 = inv(i*i);
+signe=signe*-1;
+frac=signe*invI2;
+sPi = sPi + frac;
+tmpPi = sPi * 12;
+tmpPi = racine tmpPi;
+afficher i;
+aff_ral;
+afficher pi + tmpPi * -1;
+aff_ral;
+afficher tmpPi;
+aff_ral;
+aff_ral;
+i = i + 1;
+}
