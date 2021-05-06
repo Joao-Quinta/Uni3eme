@@ -32,7 +32,7 @@ def alphabeta(node, alpha, beta):
 
 
 # init nodes
-x = False
+x = True
 y = not x
 T = Node(-4, True, x, "T")
 U = Node(3, True, x, "U")
@@ -64,3 +64,4 @@ C = Node([F, G], False, y, "C")
 A = Node([B, C], False, x, "A")
 
 print(alphabeta(A, -math.inf, math.inf))
+
